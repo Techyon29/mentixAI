@@ -7,8 +7,7 @@ import {
   CheckCircle2, Clock, AlertCircle, HelpCircle,
   Trash2, Plus, Hash, ListTodo, MousePointer2, PlusCircle, GripVertical, Calendar
 } from "lucide-react";
-import Sidebar from "../Sidebar";
-import Navbar from "../Navbar";
+import MentorLayout from "../MentorLayout";
 
 type QuestionType = "single" | "multiple" | "integer";
 
@@ -20,14 +19,6 @@ interface Question {
   correctAnswer: any;
   marks: number;
 }
-
-const BackgroundOrbs = () => (
-  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-    <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-gradient-to-br from-[#E0EFFF] to-[#C9E0FC] blur-[100px] opacity-70" />
-    <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#E8F3FF] to-[#D4E8FF] blur-[80px] opacity-60" />
-    <div className="absolute bottom-[-10%] right-[30%] w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-[#E6F0F9] to-[#CCE3FA] blur-[120px] opacity-80" />
-  </div>
-);
 
 export default function CreateTest() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -95,47 +86,34 @@ export default function CreateTest() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#F0F5FA] overflow-hidden font-sans text-slate-800">
-      
-      <BackgroundOrbs />
-
-      {/* Main Layout Container */}
-      <div className="relative z-10 flex h-screen p-4 gap-6">
-        
-        <Sidebar />
-
-        {/* Main Content */}
-        <main className="flex-1 flex flex-col h-full overflow-y-auto pr-2 pb-10 custom-scrollbar">
-          
-          <Navbar />
-
+    <MentorLayout>
           {/* Header Section */}
-          <section className="mb-6 px-2 mt-2">
-            <h1 className="text-[32px] font-bold text-[#0D245B] tracking-tight mb-1">
+          <section className="mb-4 md:mb-8 px-1 mt-4">
+            <h1 className="text-[15px] md:text-2xl font-black text-[#0D245B] tracking-tight mb-2 uppercase">
               Create New Test
             </h1>
-            <p className="text-[#5B779E] text-[15px] font-medium">
-              Build a new assessment in simple steps.
+            <p className="text-[#5B779E] text-[9px] md:text-[12px] font-black uppercase tracking-[0.15em]">
+              Build a new assessment.
             </p>
           </section>
 
           {/* Stepper */}
-          <section className="px-2 mb-8">
-            <div className="flex items-center gap-4 w-3/4 max-w-3xl">
+          <section className="px-1 mb-6 md:mb-8 overflow-x-auto no-scrollbar min-h-[80px] flex items-center">
+            <div className="flex items-center gap-2 md:gap-4 w-full max-w-4xl min-w-[600px] md:min-w-full py-2">
               {steps.map((step, index) => (
-                <div key={step.id} className="flex items-center gap-3 flex-1">
-                  <div className={`flex items-center gap-2 ${step.id === currentStep ? "text-blue-600 font-bold" : "text-[#5B779E] font-medium"}`}>
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold border-2 transition-colors ${
-                      step.id < currentStep ? "bg-blue-600 border-blue-600 text-white" : 
-                      step.id === currentStep ? "bg-white border-blue-600 text-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.2)]" : 
-                      "bg-white border-slate-300 text-slate-400"
+                <div key={step.id} className="flex items-center flex-1">
+                  <div className={`flex items-center gap-2 ${step.id === currentStep ? "text-blue-600 font-black" : "text-[#5B779E] font-black"}`}>
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center text-[11px] md:text-[13px] font-black border-2 transition-all duration-300 shrink-0 ${
+                      step.id < currentStep ? "bg-emerald-500 border-emerald-500 text-white" : 
+                      step.id === currentStep ? "bg-white border-blue-600 text-blue-600 shadow-md" : 
+                      "bg-white border-slate-200 text-slate-300"
                     }`}>
-                      {step.id < currentStep ? <CheckCircle2 className="w-4 h-4" /> : step.id}
+                      {step.id < currentStep ? <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} /> : step.id}
                     </div>
-                    <span className="text-[14.5px] whitespace-nowrap">{step.label}</span>
+                    <span className="text-[10px] md:text-[12px] whitespace-nowrap uppercase tracking-widest">{step.label}</span>
                   </div>
                   {index < steps.length - 1 && (
-                    <div className="h-px bg-slate-200 flex-1 mx-2"></div>
+                    <div className={`h-1 flex-1 mx-2 md:mx-4 min-w-[16px] rounded-full transition-all duration-500 ${step.id < currentStep ? 'bg-emerald-400' : 'bg-slate-200'}`}></div>
                   )}
                 </div>
               ))}
@@ -143,109 +121,115 @@ export default function CreateTest() {
           </section>
 
           {/* Content Flex Layout */}
-          <section className="flex gap-6 px-2 items-start">
+          <section className="flex flex-col lg:flex-row gap-5 px-1 items-start">
             
             {/* Left Box: Form */}
-            <div className="flex-1 bg-white/60 backdrop-blur-xl border border-white/70 rounded-[32px] p-8 shadow-[0_8px_24px_rgba(30,100,200,0.06),_inset_0_2px_4px_rgba(255,255,255,0.8)]">
+            <div className="w-full flex-1 bg-white border border-slate-100 rounded-[20px] md:rounded-[32px] p-4 md:p-8 shadow-sm">
               
               {currentStep === 1 && (
                 <>
-                  <h3 className="text-[18px] font-bold text-[#0D245B] mb-6">Test Information</h3>
+                  <h3 className="text-[11px] md:text-[13px] font-black text-[#0D245B] mb-6 uppercase tracking-[0.2em] flex items-center gap-3">
+                    <div className="w-1.5 h-4 bg-blue-600 rounded-full"></div>
+                    Test Info
+                  </h3>
                   
                   {/* Form Grid */}
-                  <div className="grid grid-cols-2 gap-6 mb-8">
-                    <div className="col-span-1 space-y-2">
-                      <label className="text-[13.5px] font-bold text-[#0D245B]">Test Title <span className="text-red-500">*</span></label>
-                      <input type="text" placeholder="Enter test title" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-[14px] font-medium text-[#0D245B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                    <div className="md:col-span-1 space-y-2">
+                      <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Title <span className="text-red-500">*</span></label>
+                      <input type="text" placeholder="Enter test title" className="w-full bg-slate-50 border border-slate-100 rounded-[20px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight" />
                     </div>
                     
-                    <div className="col-span-1 space-y-2">
-                      <label className="text-[13.5px] font-bold text-[#0D245B]">Subject <span className="text-red-500">*</span></label>
+                    <div className="md:col-span-1 space-y-2">
+                      <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Subject <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-[14px] font-medium text-slate-500 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm">
+                        <select className="w-full bg-slate-50 border border-slate-100 rounded-[20px] pl-3 md:pl-5 pr-8 md:pr-10 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight">
                           <option value="">Select subject</option>
                           <option value="math">Mathematics</option>
                           <option value="science">Science</option>
                           <option value="english">English</option>
                         </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5B779E] pointer-events-none" strokeWidth={2.5} />
                       </div>
                     </div>
 
-                    <div className="col-span-1 space-y-2">
-                      <label className="text-[13.5px] font-bold text-[#0D245B]">Class <span className="text-red-500">*</span></label>
+                    <div className="md:col-span-1 space-y-2">
+                      <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Class <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-[14px] font-medium text-slate-500 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm">
+                        <select className="w-full bg-slate-50 border border-slate-100 rounded-[20px] pl-3 md:pl-5 pr-8 md:pr-10 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight">
                           <option value="">Select class</option>
                           <option value="9">Class 9</option>
                           <option value="10">Class 10</option>
                           <option value="11">Class 11</option>
                           <option value="12">Class 12</option>
                         </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5B779E] pointer-events-none" strokeWidth={2.5} />
                       </div>
                     </div>
 
-                    <div className="col-span-2 space-y-2">
-                      <label className="text-[13.5px] font-bold text-[#0D245B]">Description (optional)</label>
-                      <textarea placeholder="Enter description" className="w-full h-24 bg-white border border-slate-200 rounded-xl px-4 py-3 text-[14px] font-medium text-[#0D245B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm resize-none"></textarea>
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Description</label>
+                      <textarea placeholder="Enter description" className="w-full h-24 bg-slate-50 border border-slate-100 rounded-[24px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all resize-none uppercase tracking-tight leading-relaxed"></textarea>
                     </div>
 
-                    <div className="col-span-2 grid grid-cols-5 gap-6">
-                       <div className="col-span-2 space-y-2">
-                          <label className="text-[13.5px] font-bold text-[#0D245B]">Duration <span className="text-red-500">*</span></label>
-                          <div className="flex gap-2 items-center">
-                            <div className="flex-1 flex flex-col items-center gap-1">
-                              <input type="text" defaultValue="01" className="w-14 text-center bg-white border border-slate-200 rounded-xl py-2.5 text-[15px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm" />
-                              <span className="text-[11px] font-medium text-[#5B779E]">Hours</span>
+                    <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-5 gap-5">
+                       <div className="md:col-span-3 space-y-2">
+                          <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1 leading-none">Duration <span className="text-red-500">*</span></label>
+                          <div className="flex gap-3 items-center justify-between md:justify-start">
+                            <div className="flex-1 flex flex-col items-center gap-1.5">
+                              <input type="text" defaultValue="01" className="w-full md:w-16 text-center bg-slate-50 border border-slate-100 rounded-[18px] py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all" />
+                              <span className="text-[10px] font-black text-[#5B779E] uppercase tracking-widest">Hrs</span>
                             </div>
-                            <span className="text-xl font-bold text-slate-300 pb-5">:</span>
-                            <div className="flex-1 flex flex-col items-center gap-1">
-                              <input type="text" defaultValue="30" className="w-14 text-center bg-white border border-slate-200 rounded-xl py-2.5 text-[15px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm" />
-                              <span className="text-[11px] font-medium text-[#5B779E]">Minutes</span>
+                            <span className="text-base md:text-xl font-black text-slate-200 pb-6">:</span>
+                            <div className="flex-1 flex flex-col items-center gap-1.5">
+                              <input type="text" defaultValue="30" className="w-full md:w-16 text-center bg-slate-50 border border-slate-100 rounded-[18px] py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all" />
+                              <span className="text-[10px] font-black text-[#5B779E] uppercase tracking-widest">Mins</span>
                             </div>
-                            <span className="text-xl font-bold text-slate-300 pb-5">:</span>
-                            <div className="flex-1 flex flex-col items-center gap-1">
-                              <input type="text" defaultValue="00" className="w-14 text-center bg-white border border-slate-200 rounded-xl py-2.5 text-[15px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm" />
-                              <span className="text-[11px] font-medium text-[#5B779E]">Seconds</span>
+                            <span className="text-base md:text-xl font-black text-slate-200 pb-6">:</span>
+                            <div className="flex-1 flex flex-col items-center gap-1.5">
+                              <input type="text" defaultValue="00" className="w-full md:w-16 text-center bg-slate-50 border border-slate-100 rounded-[18px] py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all" />
+                              <span className="text-[10px] font-black text-[#5B779E] uppercase tracking-widest">Secs</span>
                             </div>
                           </div>
                        </div>
 
-                       <div className="col-span-1 space-y-2">
-                          <label className="text-[13.5px] font-bold text-[#0D245B]">Total Marks <span className="text-red-500">*</span></label>
-                          <input type="number" defaultValue="100" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 pl-5 text-[14px] font-bold text-[#0D245B] placeholder:text-slate-400 focus:outline-none transition-all shadow-sm" />
+                       <div className="md:col-span-1 space-y-2">
+                          <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Total</label>
+                          <input type="number" defaultValue="100" className="w-full bg-slate-50 border border-slate-100 rounded-[20px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all" />
                        </div>
 
-                       <div className="col-span-1 space-y-2">
-                          <label className="text-[13.5px] font-bold text-[#0D245B]">Passing Marks <span className="text-red-500">*</span></label>
-                          <input type="number" defaultValue="40" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 pl-5 text-[14px] font-bold text-[#0D245B] placeholder:text-slate-400 focus:outline-none transition-all shadow-sm" />
+                       <div className="md:col-span-1 space-y-2">
+                          <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Pass</label>
+                          <input type="number" defaultValue="40" className="w-full bg-slate-50 border border-slate-100 rounded-[20px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all" />
                        </div>
                     </div>
                   </div>
 
-                  <div className="w-full h-px bg-slate-200/60 mb-8"></div>
+                  <div className="w-full h-px bg-slate-50 mb-8"></div>
 
-                  <h3 className="text-[18px] font-bold text-[#0D245B] mb-6">Additional Settings</h3>
+                  <h3 className="text-[11px] md:text-[13px] font-black text-[#0D245B] mb-6 uppercase tracking-[0.2em] flex items-center gap-3">
+                    <div className="w-1.5 h-4 bg-emerald-500 rounded-full"></div>
+                    Settings
+                  </h3>
                   
-                  <div className="grid grid-cols-2 gap-6 mb-10">
-                     <div className="col-span-1 space-y-2">
-                      <label className="text-[13.5px] font-bold text-[#0D245B]">Difficulty Level</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+                     <div className="md:col-span-1 space-y-2">
+                      <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Difficulty</label>
                       <div className="relative">
-                        <select className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-[14px] font-medium text-slate-500 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm">
+                        <select className="w-full bg-slate-50 border border-slate-100 rounded-[20px] pl-3 md:pl-5 pr-8 md:pr-10 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight">
                           <option value="">Select level</option>
                           <option value="easy">Easy</option>
                           <option value="medium">Medium</option>
                           <option value="hard">Hard</option>
                         </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5B779E] pointer-events-none" strokeWidth={2.5} />
                       </div>
                      </div>
 
-                     <div className="col-span-1 space-y-2">
-                      <label className="text-[13.5px] font-bold text-[#0D245B]">Negative Marking</label>
+                     <div className="md:col-span-1 space-y-2">
+                      <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest px-1">Negative Marking</label>
                       <div className="relative">
-                        <select className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-[14px] font-medium text-slate-500 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm">
+                        <select className="w-full bg-slate-50 border border-slate-100 rounded-[20px] pl-3 md:pl-5 pr-8 md:pr-10 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight">
                           <option value="">Select option</option>
                           <option value="0">No negative marking</option>
                           <option value="0.25">-1 per wrong answer</option>
@@ -253,86 +237,86 @@ export default function CreateTest() {
                           <option value="0.75">-3 per wrong answer</option> 
                           <option value="1">-4 per wrong answer</option>  
                         </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5B779E] pointer-events-none" strokeWidth={2.5} />
                       </div>
                      </div>
 
-                     <div className="col-span-2 space-y-4 pt-6 border-t border-slate-100 mt-4">
+                     <div className="md:col-span-2 space-y-5 pt-8 border-t border-slate-50 mt-4">
                         {/* Publish Schedule */}
-                        <div className="flex items-center justify-between">
-                          <div className="space-y-0.5">
-                            <h4 className="text-[15px] font-bold text-[#0D245B]">Publish Schedule</h4>
-                            <p className="text-[12px] text-[#5B779E] font-medium">Choose when this test will be visible to students.</p>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div className="space-y-1">
+                            <h4 className="text-[11px] md:text-[13px] font-black text-[#0D245B] uppercase tracking-[0.1em] leading-none">Publish Schedule</h4>
+                            <p className="text-[9px] md:text-[10px] font-black text-[#5B779E] uppercase tracking-widest">When will students see this?</p>
                           </div>
-                          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                          <div className="flex bg-slate-100 p-1.5 rounded-[18px] border border-slate-200/50 w-fit">
                             <button 
                               type="button"
                               onClick={() => setPublishType("now")}
-                              className={`px-4 py-1.5 rounded-lg text-[12.5px] font-bold transition-all ${publishType === 'now' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                              className={`px-3 md:px-5 py-1.5 md:py-2 rounded-[14px] text-[10px] md:text-[11px] font-black transition-all uppercase tracking-widest ${publishType === 'now' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                             >
-                              Publish Now
+                              Now
                             </button>
                             <button 
                               type="button"
                               onClick={() => setPublishType("schedule")}
-                              className={`px-4 py-1.5 rounded-lg text-[12.5px] font-bold transition-all ${publishType === 'schedule' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                              className={`px-3 md:px-5 py-1.5 md:py-2 rounded-[14px] text-[10px] md:text-[11px] font-black transition-all uppercase tracking-widest ${publishType === 'schedule' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                             >
-                              Schedule
+                              Later
                             </button>
                           </div>
                         </div>
 
                         {publishType === 'schedule' && (
-                          <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
                             <div className="space-y-2">
-                              <label className="text-[13px] font-bold text-[#0D245B] flex items-center gap-2">
-                                <Calendar className="w-3.5 h-3.5 text-blue-500" /> Select Date & Time
+                              <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] flex items-center gap-2 uppercase tracking-widest px-1">
+                                <Calendar className="w-4 h-4 text-blue-600" strokeWidth={2.5} /> Select Date
                               </label>
                               <input 
                                 type="datetime-local" 
                                 value={publishDateTime}
                                 onChange={(e) => setPublishDateTime(e.target.value)}
-                                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-[14px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm"
+                                className="w-full bg-slate-50 border border-slate-100 rounded-[20px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight"
                               />
                             </div>
                           </div>
                         )}
 
                         {/* Result Visibility */}
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-                          <div className="space-y-0.5">
-                            <h4 className="text-[15px] font-bold text-[#0D245B]">Result Visibility</h4>
-                            <p className="text-[12px] text-[#5B779E] font-medium">Choose when students can view their results.</p>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-5 border-t border-slate-50 gap-4">
+                          <div className="space-y-1">
+                            <h4 className="text-[11px] md:text-[13px] font-black text-[#0D245B] uppercase tracking-[0.1em] leading-none">Result Visibility</h4>
+                            <p className="text-[9px] md:text-[10px] font-black text-[#5B779E] uppercase tracking-widest">When are ranks visible?</p>
                           </div>
-                          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                          <div className="flex bg-slate-100 p-1.5 rounded-[18px] border border-slate-200/50 w-fit">
                             <button 
                               type="button"
                               onClick={() => setResultType("immediate")}
-                              className={`px-4 py-1.5 rounded-lg text-[12.5px] font-bold transition-all ${resultType === 'immediate' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                              className={`px-3 md:px-5 py-1.5 md:py-2 rounded-[14px] text-[10px] md:text-[11px] font-black transition-all uppercase tracking-widest ${resultType === 'immediate' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                             >
-                              Immediately
+                              Immediate
                             </button>
                             <button 
                               type="button"
                               onClick={() => setResultType("schedule")}
-                              className={`px-4 py-1.5 rounded-lg text-[12.5px] font-bold transition-all ${resultType === 'schedule' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                              className={`px-3 md:px-5 py-1.5 md:py-2 rounded-[14px] text-[10px] md:text-[11px] font-black transition-all uppercase tracking-widest ${resultType === 'schedule' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                             >
-                              Schedule
+                              Delayed
                             </button>
                           </div>
                         </div>
 
                         {resultType === 'schedule' && (
-                          <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
                             <div className="space-y-2">
-                              <label className="text-[13px] font-bold text-[#0D245B] flex items-center gap-2">
-                                <Clock className="w-3.5 h-3.5 text-blue-500" /> Select Date & Time
+                              <label className="text-[9px] md:text-[11px] font-black text-[#5B779E] flex items-center gap-2 uppercase tracking-widest px-1">
+                                <Clock className="w-4 h-4 text-blue-600" strokeWidth={2.5} /> Select Time
                               </label>
                               <input 
                                 type="datetime-local" 
                                 value={resultDateTime}
                                 onChange={(e) => setResultDateTime(e.target.value)}
-                                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-[14px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm"
+                                className="w-full bg-slate-50 border border-slate-100 rounded-[20px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all uppercase tracking-tight"
                               />
                             </div>
                           </div>
@@ -341,16 +325,16 @@ export default function CreateTest() {
                   </div>
 
                   {/* Footer Actions */}
-                  <div className="flex items-center justify-end pt-6 mt-4">
+                  <div className="flex items-center justify-end pt-8 mt-4 border-t border-slate-50">
                      <div className="flex gap-4">
-                        <button className="py-2.5 px-6 rounded-xl font-bold text-[#5B779E] text-[14.5px] border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm">
+                        <button className="py-2 md:py-3 px-4 md:px-8 rounded-2xl font-black text-[#5B779E] text-[11px] md:text-[13px] border border-slate-200 bg-white hover:bg-slate-50 transition-all uppercase tracking-widest shadow-sm active:scale-95">
                           Cancel
                         </button>
                         <button 
                           onClick={() => setCurrentStep(2)}
-                          className="py-2.5 px-6 rounded-xl bg-blue-600 text-white font-bold text-[14.5px] shadow-[0_8px_20px_rgba(37,99,235,0.3),_inset_0_2px_4px_rgba(255,255,255,0.3)] hover:bg-blue-700 transition-colors flex items-center gap-2 active:scale-95"
+                          className="py-2 md:py-3 px-4 md:px-8 rounded-2xl bg-[#0D245B] text-white font-black text-[11px] md:text-[13px] shadow-[0_8px_30px_rgb(13,36,91,0.2)] hover:bg-slate-900 transition-all flex items-center gap-3 active:scale-95 uppercase tracking-widest"
                         >
-                          Next: Add Questions <ArrowRight className="w-4 h-4" />
+                          Next: Add Questions <ArrowRight className="w-4 h-4" strokeWidth={3} />
                         </button>
                      </div>
                   </div>
@@ -359,69 +343,69 @@ export default function CreateTest() {
 
               {currentStep === 2 && (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="flex justify-between items-center mb-8">
+                  <div className="flex justify-between items-center mb-5 md:mb-10 pb-4 md:pb-6 border-b border-slate-50">
                     <div>
-                      <h3 className="text-[22px] font-bold text-[#0D245B]">Add Questions</h3>
-                      <p className="text-[14px] text-[#5B779E] font-medium">Total questions: {questions.length}</p>
+                      <h3 className="text-[12px] md:text-[15px] font-black text-[#0D245B] uppercase tracking-[0.2em] mb-1">Add Questions</h3>
+                      <p className="text-[9px] md:text-[11px] text-[#5B779E] font-black uppercase tracking-widest">Total questions: {questions.length}</p>
                     </div>
                     <button 
                       onClick={addQuestion}
-                      className="py-2.5 px-5 rounded-2xl bg-blue-600 text-white font-bold text-[14px] flex items-center gap-2 shadow-[0_8px_20px_rgba(37,99,235,0.2)] hover:bg-blue-700 transition-all active:scale-95"
+                      className="py-2 md:py-3 px-4 md:px-6 rounded-2xl bg-[#0D245B] text-white font-black text-[11px] md:text-[13px] flex items-center gap-3 shadow-[0_8px_30px_rgb(13,36,91,0.2)] hover:bg-slate-900 transition-all active:scale-95 uppercase tracking-widest"
                     >
-                      <Plus className="w-4 h-4" /> Add New Question
+                      <Plus className="w-4 h-4" strokeWidth={3} /> Add New
                     </button>
                   </div>
                   
-                  <div className="space-y-8">
+                  <div className="space-y-5 md:space-y-10">
                     {questions.map((q, index) => (
-                      <div key={q.id} className="relative group bg-white border border-slate-200 rounded-[28px] p-7 shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)] transition-all duration-300">
+                      <div key={q.id} className="relative group bg-white border border-slate-100 rounded-[20px] md:rounded-[32px] p-3 md:p-8 shadow-sm hover:shadow-md transition-all duration-300">
                         {/* Question Header */}
-                        <div className="flex justify-between items-center mb-6">
+                        <div className="flex justify-between items-center mb-4 md:mb-8">
                           <div className="flex items-center gap-4">
                             <div className="cursor-move p-1 text-slate-300 hover:text-slate-400">
                               <GripVertical className="w-5 h-5" />
                             </div>
-                            <span className="text-[15px] font-bold text-[#0D245B] bg-blue-50 px-4 py-1.5 rounded-xl border border-blue-100/50">
+                            <span className="text-[10px] md:text-[12px] font-black text-[#0D245B] bg-blue-50 px-3 md:px-5 py-1 md:py-2 rounded-xl border border-blue-100/50 uppercase tracking-widest">
                               Question {index + 1}
                             </span>
                           </div>
                           
                           <div className="flex items-center gap-3">
                             {/* Type Selector */}
-                            <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100">
+                            <div className="flex bg-slate-100 p-1 rounded-[18px] border border-slate-200/50">
                               <button 
                                 onClick={() => updateQuestion(q.id, { type: "single" })}
-                                className={`p-1.5 rounded-lg transition-all flex items-center gap-2 px-3 text-[12px] font-bold ${q.type === 'single' ? 'bg-white text-blue-600 shadow-sm border border-slate-100' : 'text-slate-400 hover:text-slate-600'}`}
+                                className={`p-2 rounded-[14px] transition-all flex items-center gap-2 px-2 md:px-4 text-[9px] md:text-[11px] font-black uppercase tracking-widest ${q.type === 'single' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                                 title="Single Choice"
                               >
-                                <MousePointer2 className="w-3.5 h-3.5" />
-                                {q.type === 'single' && "Single Choice"}
+                                <MousePointer2 className="w-3.5 h-3.5" strokeWidth={2.5} />
+                                {q.type === 'single' && "Single"}
                               </button>
                               <button 
                                 onClick={() => updateQuestion(q.id, { type: "multiple" })}
-                                className={`p-1.5 rounded-lg transition-all flex items-center gap-2 px-3 text-[12px] font-bold ${q.type === 'multiple' ? 'bg-white text-blue-600 shadow-sm border border-slate-100' : 'text-slate-400 hover:text-slate-600'}`}
+                                className={`p-2 rounded-[14px] transition-all flex items-center gap-2 px-2 md:px-4 text-[9px] md:text-[11px] font-black uppercase tracking-widest ${q.type === 'multiple' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                                 title="Multiple Choice"
                               >
-                                <ListTodo className="w-3.5 h-3.5" />
-                                {q.type === 'multiple' && "Multiple Choice"}
+                                <ListTodo className="w-3.5 h-3.5" strokeWidth={2.5} />
+                                {q.type === 'multiple' && "Multi"}
                               </button>
                               <button 
                                 onClick={() => updateQuestion(q.id, { type: "integer" })}
-                                className={`p-1.5 rounded-lg transition-all flex items-center gap-2 px-3 text-[12px] font-bold ${q.type === 'integer' ? 'bg-white text-blue-600 shadow-sm border border-slate-100' : 'text-slate-400 hover:text-slate-600'}`}
+                                className={`p-2 rounded-[14px] transition-all flex items-center gap-2 px-2 md:px-4 text-[9px] md:text-[11px] font-black uppercase tracking-widest ${q.type === 'integer' ? 'bg-white text-blue-600 shadow-md scale-105' : 'text-slate-500 hover:text-slate-700'}`}
                                 title="Integer Based"
                               >
-                                <Hash className="w-3.5 h-3.5" />
-                                {q.type === 'integer' && "Integer Based"}
+                                <Hash className="w-3.5 h-3.5" strokeWidth={2.5} />
+                                {q.type === 'integer' && "Integer"}
                               </button>
                             </div>
                             
-                            <div className="w-px h-6 bg-slate-200 mx-1" />
+                            <div className="w-px h-6 bg-slate-100 mx-2" />
                             
                             <button 
                               onClick={() => removeQuestion(q.id)}
-                              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                              className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90"
                             >
-                              <Trash2 className="w-4.5 h-4.5" />
+                              <Trash2 className="w-5 h-5" strokeWidth={2.5} />
                             </button>
                           </div>
                         </div>
@@ -432,20 +416,20 @@ export default function CreateTest() {
                             value={q.text}
                             onChange={(e) => updateQuestion(q.id, { text: e.target.value })}
                             placeholder="Type your question here..." 
-                            className="w-full h-24 bg-slate-50/50 border border-slate-200 rounded-2xl px-5 py-4 text-[15px] font-medium text-[#0D245B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 focus:bg-white transition-all resize-none shadow-inner"
+                            className="w-full h-20 md:h-28 bg-slate-50 border border-slate-100 rounded-[24px] px-3 md:px-6 py-3 md:py-5 text-[11px] md:text-[13px] font-black text-[#0D245B] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all resize-none shadow-inner leading-relaxed uppercase tracking-tight"
                           />
                         </div>
 
                         {/* Options / Answer Section */}
                         {q.type !== 'integer' ? (
-                          <div className="space-y-3">
+                          <div className="space-y-4">
                             {q.options.map((opt, optIdx) => (
                               <div key={optIdx} className="flex items-center gap-4 group/opt">
                                 <button 
-                                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${
-                                    q.type === 'single' 
-                                      ? (q.correctAnswer === optIdx ? 'bg-blue-600 border-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.3)]' : 'border-slate-300 hover:border-blue-400')
-                                      : (Array.isArray(q.correctAnswer) && q.correctAnswer.includes(optIdx) ? 'bg-blue-600 border-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.3)] rounded-lg' : 'border-slate-300 hover:border-blue-400 rounded-lg')
+                                  className={`w-8 h-8 rounded-xl border-2 flex items-center justify-center transition-all shrink-0 ${
+                                    (q.type === 'single' ? q.correctAnswer === optIdx : Array.isArray(q.correctAnswer) && q.correctAnswer.includes(optIdx))
+                                      ? 'bg-blue-600 border-blue-600 shadow-lg shadow-blue-500/20 scale-105' 
+                                      : 'bg-white border-slate-200 hover:border-blue-300'
                                   }`}
                                   onClick={() => {
                                     if (q.type === 'single') {
@@ -460,7 +444,7 @@ export default function CreateTest() {
                                   }}
                                 >
                                   {(q.type === 'single' ? q.correctAnswer === optIdx : Array.isArray(q.correctAnswer) && q.correctAnswer.includes(optIdx)) && (
-                                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                                    <CheckCircle2 className="w-4 h-4 text-white" strokeWidth={3} />
                                   )}
                                 </button>
                                 
@@ -474,10 +458,10 @@ export default function CreateTest() {
                                       updateQuestion(q.id, { options: newOpts });
                                     }}
                                     placeholder={`Option ${optIdx + 1}`} 
-                                    className={`w-full bg-white border rounded-xl px-4 py-2.5 text-[14px] font-medium transition-all focus:outline-none ${
+                                    className={`w-full bg-slate-50 border rounded-[18px] px-3 md:px-5 py-2 md:py-3 text-[11px] md:text-[13px] font-black transition-all focus:outline-none uppercase tracking-tight ${
                                       (q.type === 'single' ? q.correctAnswer === optIdx : Array.isArray(q.correctAnswer) && q.correctAnswer.includes(optIdx))
-                                        ? 'border-blue-300 ring-2 ring-blue-500/5 bg-blue-50/10'
-                                        : 'border-slate-200 focus:border-blue-400'
+                                        ? 'border-blue-300 bg-blue-50/30 text-blue-700'
+                                        : 'border-slate-100 focus:border-blue-400 text-[#0D245B]'
                                     }`}
                                   />
                                 </div>
@@ -485,9 +469,9 @@ export default function CreateTest() {
                                 {q.options.length > 2 && (
                                   <button 
                                     onClick={() => removeOption(q.id, optIdx)}
-                                    className="opacity-0 group-hover/opt:opacity-100 p-2 text-slate-300 hover:text-red-400 transition-all"
+                                    className="opacity-0 group-hover/opt:opacity-100 p-2.5 text-slate-300 hover:text-red-500 transition-all active:scale-95"
                                   >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-4 h-4" strokeWidth={2.5} />
                                   </button>
                                 )}
                               </div>
@@ -496,48 +480,52 @@ export default function CreateTest() {
                             {q.options.length < 6 && (
                               <button 
                                 onClick={() => addOption(q.id)}
-                                className="flex items-center gap-2 text-[13px] font-bold text-blue-600 hover:text-blue-700 mt-2 px-10 transition-colors"
+                                className="flex items-center gap-3 text-[11px] font-black text-blue-600 hover:text-blue-700 mt-6 px-12 transition-all uppercase tracking-[0.15em] active:scale-95"
                               >
-                                <PlusCircle className="w-4 h-4" /> Add Option
+                                <PlusCircle className="w-4 h-4" strokeWidth={3} /> Add Option
                               </button>
                             )}
                           </div>
                         ) : (
-                          <div className="bg-slate-50/50 rounded-2xl p-6 border border-dashed border-slate-300 flex flex-col gap-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-blue-500">
-                                <Hash className="w-4 h-4" />
+                          <div className="bg-slate-50 rounded-[28px] p-8 border border-dashed border-slate-200 flex flex-col gap-5">
+                            <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-blue-600 shadow-sm">
+                                <Hash className="w-5 h-5" strokeWidth={2.5} />
                               </div>
-                              <span className="text-[14px] font-bold text-[#0D245B]">Correct Answer (Numeric)</span>
+                              <span className="text-[13px] font-black text-[#0D245B] uppercase tracking-widest">Correct Answer (Numeric)</span>
                             </div>
                             <input 
                               type="number" 
                               value={q.correctAnswer || ""}
                               onChange={(e) => updateQuestion(q.id, { correctAnswer: e.target.value })}
-                              placeholder="Type correct integer value..." 
-                              className="w-full max-w-[240px] bg-white border border-slate-200 rounded-xl px-5 py-3 text-[15px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm"
+                              placeholder="0" 
+                              className="w-full max-w-[180px] bg-white border border-slate-100 rounded-[20px] px-7 py-4 text-[18px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all text-center shadow-inner"
                             />
-                            <p className="text-[12px] text-[#5B779E] font-medium italic">Note: Only numeric answers will be accepted for this question.</p>
+                            <p className="text-[10px] text-[#5B779E] font-black uppercase tracking-widest leading-relaxed">Note: Students must enter exact numeric value.</p>
                           </div>
                         )}
 
                         {/* Question Footer */}
-                        <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <span className="text-[13px] font-bold text-[#0D245B]">Marks:</span>
-                            <input 
-                              type="number" 
-                              value={q.marks}
-                              onChange={(e) => updateQuestion(q.id, { marks: parseInt(e.target.value) || 0 })}
-                              className="w-16 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-[14px] font-bold text-[#0D245B] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all text-center shadow-inner"
-                              min="0"
-                            />
-                          </div>
-                          
-                          <div className="flex items-center gap-4">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                              <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
-                              <span className="text-[13px] font-bold text-[#0D245B]">Required</span>
+                        <div className="mt-8 pt-8 border-t border-slate-50 flex justify-between items-center">
+                          <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-3">
+                              <span className="text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest">Marks:</span>
+                              <input 
+                                type="number" 
+                                value={q.marks}
+                                onChange={(e) => updateQuestion(q.id, { marks: parseInt(e.target.value) || 0 })}
+                                className="w-16 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-400 transition-all text-center shadow-inner"
+                                min="0"
+                              />
+                            </div>
+                            
+                            <label className="flex items-center gap-2.5 cursor-pointer group/check">
+                              <div className="relative flex items-center">
+                                <input type="checkbox" className="peer sr-only" />
+                                <div className="w-5 h-5 bg-white border-2 border-slate-200 rounded-lg transition-all peer-checked:bg-blue-600 peer-checked:border-blue-600"></div>
+                                <CheckCircle2 className="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity left-0.5" strokeWidth={3} />
+                              </div>
+                              <span className="text-[11px] font-black text-[#5B779E] uppercase tracking-widest group-hover/check:text-[#0D245B] transition-colors">Required</span>
                             </label>
                           </div>
                         </div>
@@ -545,18 +533,18 @@ export default function CreateTest() {
                     ))}
                   </div>
 
-                  <div className="flex items-center justify-between pt-10 mt-10 border-t border-slate-200/60">
+                  <div className="flex flex-col sm:flex-row items-center justify-between pt-10 mt-10 border-t border-slate-50 gap-4">
                     <button 
                       onClick={() => setCurrentStep(1)}
-                      className="py-2.5 px-8 rounded-xl font-bold text-[#5B779E] text-[15px] border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm"
+                      className="w-full sm:w-auto py-2.5 md:py-3.5 px-6 md:px-10 rounded-2xl font-black text-[#5B779E] text-[10px] md:text-[12px] border border-slate-200 bg-white hover:bg-slate-50 transition-all uppercase tracking-widest shadow-sm active:scale-95"
                     >
                       Back
                     </button>
                     <button 
                       onClick={() => setCurrentStep(3)}
-                      className="py-2.5 px-8 rounded-xl bg-blue-600 text-white font-bold text-[15px] shadow-[0_8px_20px_rgba(37,99,235,0.3),_inset_0_2px_4px_rgba(255,255,255,0.3)] hover:bg-blue-700 transition-colors flex items-center gap-2 active:scale-95"
+                      className="w-full sm:w-auto py-2.5 md:py-3.5 px-6 md:px-10 rounded-2xl bg-[#0D245B] text-white font-black text-[10px] md:text-[12px] shadow-[0_8px_30px_rgb(13,36,91,0.2)] hover:bg-slate-900 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase tracking-widest"
                     >
-                      Next: Review
+                      Next: Review <ArrowRight className="w-4 h-4" strokeWidth={3} />
                     </button>
                   </div>
                 </div>
@@ -564,23 +552,23 @@ export default function CreateTest() {
 
               {currentStep === 3 && (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="flex justify-between items-center mb-8 px-2">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
                     <div>
-                      <h3 className="text-[22px] font-bold text-[#0D245B]">Review Test</h3>
-                      <p className="text-[14px] text-[#5B779E] font-medium">Please verify all details before publishing.</p>
+                      <h3 className="text-[15px] font-black text-[#0D245B] uppercase tracking-[0.2em] mb-1">Review Test</h3>
+                      <p className="text-[11px] text-[#5B779E] font-black uppercase tracking-widest leading-relaxed">Please verify all details before publishing.</p>
                     </div>
-                    <div className="flex flex-wrap gap-3 justify-end">
-                      <div className="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-[13px] font-bold border border-blue-100 flex items-center gap-2 shrink-0">
+                    <div className="flex flex-wrap gap-3">
+                      <div className="bg-blue-50 text-blue-700 px-5 py-2.5 rounded-2xl text-[11px] font-black border border-blue-100 uppercase tracking-widest flex items-center gap-2 shadow-sm">
                         Total Marks: {questions.reduce((acc, q) => acc + q.marks, 0)}
                       </div>
                       {publishType === 'schedule' && publishDateTime && (
-                        <div className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-xl text-[13px] font-bold border border-emerald-100 flex items-center gap-2 shrink-0">
-                          <Clock className="w-3.5 h-3.5" /> Published: {new Date(publishDateTime).toLocaleString()}
+                        <div className="bg-emerald-50 text-emerald-700 px-5 py-2.5 rounded-2xl text-[11px] font-black border border-emerald-100 uppercase tracking-widest flex items-center gap-2 shadow-sm">
+                          <Clock className="w-4 h-4" strokeWidth={2.5} /> Published: {new Date(publishDateTime).toLocaleString()}
                         </div>
                       )}
                       {resultType === 'schedule' && resultDateTime && (
-                        <div className="bg-purple-50 text-purple-600 px-4 py-2 rounded-xl text-[13px] font-bold border border-purple-100 flex items-center gap-2 shrink-0">
-                          <AlertCircle className="w-3.5 h-3.5" /> Results: {new Date(resultDateTime).toLocaleString()}
+                        <div className="bg-purple-50 text-purple-700 px-5 py-2.5 rounded-2xl text-[11px] font-black border border-purple-100 uppercase tracking-widest flex items-center gap-2 shadow-sm">
+                          <AlertCircle className="w-4 h-4" strokeWidth={2.5} /> Results: {new Date(resultDateTime).toLocaleString()}
                         </div>
                       )}
                     </div>
@@ -588,38 +576,38 @@ export default function CreateTest() {
 
                   <div className="space-y-4 mb-10">
                     {questions.map((q, index) => (
-                      <div key={q.id} className="bg-white/40 border border-white/60 rounded-2xl p-5 flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shrink-0">
+                      <div key={q.id} className="bg-slate-50 border border-slate-100 rounded-[28px] p-5 flex items-start gap-5 hover:bg-white hover:shadow-md transition-all duration-300 group">
+                        <div className="w-10 h-10 rounded-xl bg-[#0D245B] text-white flex items-center justify-center font-black text-[14px] shrink-0 shadow-lg shadow-slate-900/20">
                           {index + 1}
                         </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start mb-2">
-                            <h4 className="text-[15px] font-bold text-[#0D245B] line-clamp-1">{q.text || "(No question text)"}</h4>
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded">{q.type}</span>
+                        <div className="flex-1 pt-1">
+                          <div className="flex justify-between items-start mb-2 gap-4">
+                            <h4 className="text-[11px] md:text-[12px] font-black text-[#0D245B] line-clamp-2 uppercase tracking-tight">{q.text || "(No question text)"}</h4>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-[#5B779E] bg-white border border-slate-100 px-2.5 py-1 rounded-lg shrink-0">{q.type}</span>
                           </div>
-                          <p className="text-[12px] text-[#5B779E] font-medium">
-                            {q.type === 'integer' ? `Correct Answer: ${q.correctAnswer || 'Not set'}` : `${q.options.filter(o => o).length} Options • ${q.marks} Mark${q.marks > 1 ? 's' : ''}`}
+                          <p className="text-[10px] text-[#5B779E] font-black uppercase tracking-[0.1em]">
+                            {q.type === 'integer' ? `Correct: ${q.correctAnswer || 'Not set'}` : `${q.options.filter(o => o).length} Options • ${q.marks} Mark${q.marks > 1 ? 's' : ''}`}
                           </p>
                         </div>
-                        <button onClick={() => setCurrentStep(2)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
-                           <Rocket className="w-4 h-4 rotate-[270deg]" />
+                        <button onClick={() => setCurrentStep(2)} className="p-2.5 text-blue-600 hover:bg-blue-50 rounded-xl transition-all active:scale-90 group-hover:scale-110">
+                           <Rocket className="w-5 h-5 rotate-[270deg]" strokeWidth={2.5} />
                         </button>
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex items-center justify-between pt-10 border-t border-slate-200/60">
+                  <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-slate-50 gap-4">
                     <button 
                       onClick={() => setCurrentStep(2)}
-                      className="py-2.5 px-8 rounded-xl font-bold text-[#5B779E] text-[15px] border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm"
+                      className="w-full sm:w-auto py-2.5 md:py-3.5 px-6 md:px-10 rounded-2xl font-black text-[#5B779E] text-[10px] md:text-[12px] border border-slate-200 bg-white hover:bg-slate-50 transition-all uppercase tracking-widest shadow-sm active:scale-95"
                     >
                       Back to Edit
                     </button>
                     <button 
                       onClick={() => setShowConfirmModal(true)}
-                      className="py-2.5 px-10 rounded-xl bg-blue-600 text-white font-bold text-[15px] shadow-[0_8px_20px_rgba(37,99,235,0.3)] hover:bg-blue-700 transition-colors active:scale-95 flex items-center gap-2"
+                      className="w-full sm:w-auto py-2.5 md:py-3.5 px-6 md:px-12 rounded-2xl bg-blue-600 text-white font-black text-[10px] md:text-[12px] shadow-[0_8px_30px_rgba(37,99,235,0.2)] hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest"
                     >
-                      Confirm & Publish <CheckCircle2 className="w-4 h-4" />
+                      Confirm & Publish <CheckCircle2 className="w-4 h-4" strokeWidth={3} />
                     </button>
                   </div>
                 </div>
@@ -627,22 +615,27 @@ export default function CreateTest() {
 
               {/* Custom Confirmation Modal */}
               {showConfirmModal && (
-                <div className="fixed inset-0 z-[250] flex items-center justify-center bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-300">
-                  <div className="bg-white/95 backdrop-blur-2xl rounded-[32px] p-10 max-w-md w-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/50 transform animate-in zoom-in-95 duration-300">
-                    <div className="w-20 h-20 rounded-[24px] bg-blue-50 text-blue-500 flex items-center justify-center mb-8 mx-auto shadow-sm">
-                      <CheckCircle2 className="w-10 h-10" />
+                <div className="fixed inset-0 z-[250] flex items-center justify-center bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300 p-4">
+                  <div className="bg-white rounded-[40px] p-8 md:p-12 max-w-md w-full shadow-[0_32px_80px_rgba(0,0,0,0.3)] border border-white transform animate-in zoom-in-95 duration-300 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-2 bg-blue-600"></div>
+                    
+                    <div className="w-24 h-24 rounded-[32px] bg-blue-50 text-blue-600 flex items-center justify-center mb-8 mx-auto shadow-inner relative">
+                      <CheckCircle2 className="w-12 h-12" strokeWidth={2.5} />
+                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center border-4 border-white">
+                        <Rocket className="w-3.5 h-3.5 text-white" />
+                      </div>
                     </div>
 
-                    <h3 className="text-[24px] font-black text-[#0D245B] text-center mb-4 leading-tight">
-                      Publish Test?
+                    <h3 className="text-[20px] font-black text-[#0D245B] text-center mb-4 uppercase tracking-tight leading-tight">
+                      Ready to Launch?
                     </h3>
 
-                    <p className="text-[15px] text-slate-500 font-medium text-center mb-6 leading-relaxed">
-                      Please enter your master password to confirm and publish this test.
+                    <p className="text-[12px] text-[#5B779E] font-black text-center mb-10 leading-relaxed uppercase tracking-widest">
+                      Enter your master password to publish this assessment.
                     </p>
 
-                    <div className="mb-8">
-                      <label className="text-[13px] font-bold text-[#0D245B] block mb-2 text-center">
+                    <div className="mb-10 space-y-3">
+                      <label className="text-[10px] font-black text-[#5B779E] block text-center uppercase tracking-[0.2em]">
                         Master Password
                       </label>
                       <input
@@ -652,15 +645,15 @@ export default function CreateTest() {
                           setAdminPassword(e.target.value);
                           setPasswordError("");
                         }}
-                        className={`w-full px-4 py-3 bg-slate-50/50 border ${passwordError ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-blue-100'} rounded-xl focus:outline-none focus:ring-2 text-center font-medium text-slate-700 transition-all`}
-                        placeholder="••••••••"
+                        className={`w-full px-6 py-4 bg-slate-50 border ${passwordError ? 'border-red-400 focus:ring-red-100' : 'border-slate-100 focus:border-blue-400'} rounded-[20px] focus:outline-none focus:ring-4 text-center font-black text-[18px] text-[#0D245B] transition-all uppercase tracking-[0.3em]`}
+                        placeholder="••••"
                       />
                       {passwordError && (
-                        <p className="text-red-500 text-[12px] font-bold text-center mt-2">{passwordError}</p>
+                        <p className="text-red-500 text-[10px] font-black text-center mt-3 uppercase tracking-widest">{passwordError}</p>
                       )}
                     </div>
 
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-4">
                       <button
                         onClick={() => {
                           if (adminPassword !== "admin123") {
@@ -672,9 +665,9 @@ export default function CreateTest() {
                           setPasswordError("");
                           setCurrentStep(4);
                         }}
-                        className="w-full py-4 rounded-2xl font-black text-[15px] transition-all shadow-md active:scale-95 bg-blue-600 text-white hover:bg-blue-700"
+                        className="w-full py-4.5 rounded-[24px] font-black text-[13px] transition-all shadow-lg active:scale-95 bg-blue-600 text-white hover:bg-blue-700 uppercase tracking-widest"
                       >
-                        Confirm & Publish
+                        Publish Now
                       </button>
                       <button
                         onClick={() => {
@@ -682,7 +675,7 @@ export default function CreateTest() {
                           setAdminPassword("");
                           setPasswordError("");
                         }}
-                        className="w-full py-4 rounded-2xl font-bold text-[15px] text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all"
+                        className="w-full py-4.5 rounded-[24px] font-black text-[13px] text-[#5B779E] hover:text-[#0D245B] hover:bg-slate-50 transition-all uppercase tracking-widest"
                       >
                         Cancel
                       </button>
@@ -692,23 +685,26 @@ export default function CreateTest() {
               )}
 
               {currentStep === 4 && (
-                <div className="text-center py-20 flex flex-col items-center animate-in zoom-in duration-500">
-                  <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner">
-                    <CheckCircle2 className="w-10 h-10" />
+                <div className="text-center py-24 flex flex-col items-center animate-in zoom-in duration-700">
+                  <div className="w-28 h-28 bg-emerald-50 text-emerald-500 rounded-[40px] flex items-center justify-center mb-10 shadow-lg shadow-emerald-500/10 relative">
+                    <CheckCircle2 className="w-14 h-14" strokeWidth={2.5} />
+                    <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center border-4 border-white animate-bounce-slow">
+                      <Rocket className="w-5 h-5 text-white" />
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-[#0D245B] mb-2">
-                    {publishType === 'schedule' ? 'Test Scheduled Successfully!' : 'Test Published Successfully!'}
+                  <h3 className="text-[22px] font-black text-[#0D245B] mb-4 uppercase tracking-tight">
+                    {publishType === 'schedule' ? 'Launch Scheduled!' : 'Mission Successful!'}
                   </h3>
-                  <p className="text-slate-500 mb-10 font-medium text-center max-w-md">
+                  <p className="text-[12px] text-[#5B779E] mb-12 font-black uppercase tracking-[0.1em] text-center max-w-sm leading-relaxed">
                     {publishType === 'schedule' 
-                      ? `Students will be able to see and attempt this test starting from ${publishDateTime ? new Date(publishDateTime).toLocaleString() : 'the scheduled time'}.` 
-                      : 'Students can now see and attempt this test in their panel.'}
+                      ? `Assessment will be live on ${publishDateTime ? new Date(publishDateTime).toLocaleString() : 'the scheduled time'}.` 
+                      : 'Test is now live and accessible to all assigned students.'}
                   </p>
                   <Link 
                     href="/mentor-dashboard"
-                    className="py-3 px-10 rounded-2xl bg-[#0D245B] text-white font-bold text-[15px] shadow-[0_8px_24px_rgba(13,36,91,0.2)] hover:bg-slate-900 transition-all active:scale-95 no-underline"
+                    className="py-4.5 px-12 rounded-[24px] bg-[#0D245B] text-white font-black text-[13px] shadow-[0_12px_40px_rgba(13,36,91,0.25)] hover:bg-slate-900 transition-all active:scale-95 no-underline uppercase tracking-[0.2em]"
                   >
-                    Return to Dashboard
+                    Back to Terminal
                   </Link>
                 </div>
               )}
@@ -716,52 +712,48 @@ export default function CreateTest() {
             </div>
 
             {/* Right Box: Tips */}
-            <div className="w-[320px] bg-gradient-to-b from-[#EBF4FF] to-white/70 backdrop-blur-xl border border-white rounded-[32px] p-6 shadow-[0_12px_32px_rgba(30,100,200,0.1),_inset_0_2px_8px_rgba(255,255,255,0.9)] flex flex-col items-center relative overflow-hidden shrink-0">
-               {/* Decorative glow inside */}
-               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl" />
-               <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/50 rounded-full blur-2xl" />
-
-               <div className="w-24 h-24 bg-blue-100 rounded-full mb-6 flex justify-center items-center relative shadow-[inset_0_4px_10px_rgba(255,255,255,0.8)]">
-                  <Rocket className="w-12 h-12 text-blue-600 fill-blue-500/20" strokeWidth={1.5} />
-                  <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-yellow-300 rounded-full blur-md opacity-60"></div>
+            <div className="w-full lg:w-[320px] bg-white border border-slate-100 rounded-[32px] p-8 shadow-sm flex flex-col items-center relative overflow-hidden shrink-0">
+               <div className="w-20 h-20 bg-blue-50 rounded-[24px] mb-8 flex justify-center items-center relative shadow-inner">
+                  <Rocket className="w-10 h-10 text-blue-600" strokeWidth={2.5} />
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-400 rounded-lg blur-lg opacity-40 animate-pulse"></div>
                </div>
 
-               <h4 className="text-[15.5px] font-bold text-[#0D245B] mb-6 text-center">
-                 Tips for creating effective tests
+               <h4 className="text-[13px] font-black text-[#0D245B] mb-8 text-center uppercase tracking-[0.2em]">
+                 Expert Protocol
                </h4>
 
-               <ul className="w-full space-y-4 mb-10">
-                 <li className="flex items-start gap-3">
-                   <div className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                     <CheckCircle2 className="w-3 h-3 text-blue-600" />
+               <ul className="w-full space-y-6 mb-12">
+                 <li className="flex items-start gap-4">
+                   <div className="mt-1 w-5 h-5 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
+                     <CheckCircle2 className="w-3 h-3 text-emerald-500" strokeWidth={3} />
                    </div>
-                   <span className="text-[13px] font-bold text-[#0D245B] leading-[18px]">Add a clear and descriptive test title</span>
+                   <span className="text-[11px] font-black text-[#5B779E] leading-[18px] uppercase tracking-widest">Descriptive test titles help students focus</span>
                  </li>
-                 <li className="flex items-start gap-3">
-                   <div className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                     <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                 <li className="flex items-start gap-4">
+                   <div className="mt-1 w-5 h-5 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
+                     <CheckCircle2 className="w-3 h-3 text-emerald-500" strokeWidth={3} />
                    </div>
-                   <span className="text-[13px] font-bold text-[#0D245B] leading-[18px]">Set appropriate duration and limit attempts</span>
+                   <span className="text-[11px] font-black text-[#5B779E] leading-[18px] uppercase tracking-widest">Balanced difficulty ensures better assessment</span>
                  </li>
-                 <li className="flex items-start gap-3">
-                   <div className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                     <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                 <li className="flex items-start gap-4">
+                   <div className="mt-1 w-5 h-5 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
+                     <CheckCircle2 className="w-3 h-3 text-emerald-500" strokeWidth={3} />
                    </div>
-                   <span className="text-[13px] font-bold text-[#0D245B] leading-[18px]">Ensure questions are balanced across topics</span>
+                   <span className="text-[11px] font-black text-[#5B779E] leading-[18px] uppercase tracking-widest">Negative marking reduces random guessing</span>
                  </li>
-                 <li className="flex items-start gap-3">
-                   <div className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                     <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                 <li className="flex items-start gap-4">
+                   <div className="mt-1 w-5 h-5 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
+                     <CheckCircle2 className="w-3 h-3 text-emerald-500" strokeWidth={3} />
                    </div>
-                   <span className="text-[13px] font-bold text-[#0D245B] leading-[18px]">Review before publishing</span>
+                   <span className="text-[11px] font-black text-[#5B779E] leading-[18px] uppercase tracking-widest">Always preview test in review stage</span>
                  </li>
                </ul>
 
-               <div className="w-full mt-auto">
-                 <div className="flex items-center gap-2 mb-3 text-[13px] font-bold text-[#0D245B]">
-                   <HelpCircle className="w-4 h-4 text-blue-500" /> Need help?
+               <div className="w-full mt-auto pt-8 border-t border-slate-50">
+                 <div className="flex items-center gap-3 mb-4 text-[11px] font-black text-[#0D245B] uppercase tracking-widest">
+                   <HelpCircle className="w-4 h-4 text-blue-600" strokeWidth={2.5} /> Logic Support
                  </div>
-                 <button className="w-full py-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[14px] transition-colors border border-blue-200/60 shadow-sm active:scale-95">
+                 <button className="w-full py-4 rounded-[20px] bg-slate-50 hover:bg-slate-100 text-[#5B779E] font-black text-[11px] transition-all border border-slate-100 uppercase tracking-widest active:scale-95 shadow-sm">
                    Take Guidance
                  </button>
                </div>
@@ -769,25 +761,26 @@ export default function CreateTest() {
 
           </section>
 
-        </main>
-      </div>
-
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #E2E8F0;
-          border-radius: 10px;
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(-5%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+          50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 2s infinite;
         }
       `,
         }}
       />
-    </div>
+    </MentorLayout>
   );
 }
