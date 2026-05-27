@@ -179,16 +179,16 @@ export default function SignUp() {
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <Logo />
-          <span className="text-[24px] font-bold text-[#0D245B] tracking-tight">
+          <span className="text-[20px] font-black text-[#0D245B] tracking-tight uppercase">
             Mentix AI
           </span>
         </div>
 
         <div className="text-center mb-8">
-          <h2 className="text-[32px] font-bold text-[#0D245B] mb-2 tracking-tight">
-            Create an Account
+          <h2 className="text-[28px] font-black text-[#0D245B] mb-2 tracking-tighter uppercase">
+            Create Account
           </h2>
-          <p className="text-[#5B779E] text-[15.5px] font-medium">
+          <p className="text-[#5B779E] text-[13px] font-black uppercase tracking-widest">
             Join us to start your assessment journey
           </p>
         </div>
@@ -197,139 +197,139 @@ export default function SignUp() {
           className="w-full space-y-[22px]"
           onSubmit={(e) => e.preventDefault()}
         >
-          <div className="space-y-[6px]">
-            <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+          <div className="space-y-2">
+            <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
               Full Name
             </label>
             <div className="relative flex items-center">
               <User
-                className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                strokeWidth={1.5}
+                className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                strokeWidth={2.5}
               />
               <input
                 type="text"
                 required
-                placeholder="Enter your full name"
-                className="w-full pl-[46px] pr-4 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                  focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                  transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                placeholder="John Doe"
+                className="w-full pl-[46px] pr-4 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                  focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                  transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
               />
             </div>
           </div>
 
-          <div className="space-y-[6px]">
-            <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+          <div className="space-y-2">
+            <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
               Email address
             </label>
             <div className="relative flex items-center">
               <Mail
-                className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                strokeWidth={1.5}
+                className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                strokeWidth={2.5}
               />
               <input
                 type="email"
                 required
-                placeholder="Enter your email"
-                className="w-full pl-[46px] pr-4 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                  focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                  transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                placeholder="name@university.edu"
+                className="w-full pl-[46px] pr-4 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                  focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                  transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
               />
             </div>
           </div>
 
-          <div className="space-y-[6px]">
-            <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+          <div className="space-y-2">
+            <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
               Password
             </label>
             <div className="relative flex items-center">
               <Lock
-                className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                strokeWidth={1.5}
+                className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                strokeWidth={2.5}
               />
               <input
                 type={showPassword ? "text" : "password"}
                 required
-                placeholder="Create a password"
-                className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                  focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                  transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                placeholder="••••••••"
+                className="w-full pl-[46px] pr-12 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                  focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                  transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 text-[#7C97BB] hover:text-[#4A678E] transition-colors"
+                className="absolute right-4 text-[#5B779E] hover:text-[#0D245B] transition-colors"
               >
                 {showPassword ? (
-                  <EyeOff className="w-[18px] h-[18px]" strokeWidth={2} />
+                  <EyeOff className="w-5 h-5" strokeWidth={2.5} />
                 ) : (
-                  <Eye className="w-[18px] h-[18px]" strokeWidth={2} />
+                  <Eye className="w-5 h-5" strokeWidth={2.5} />
                 )}
               </button>
             </div>
           </div>
 
-          <div className="space-y-[6px]">
-            <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+          <div className="space-y-2">
+            <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
               Confirm Password
             </label>
             <div className="relative flex items-center">
               <Lock
-                className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                strokeWidth={1.5}
+                className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                strokeWidth={2.5}
               />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 required
-                placeholder="Confirm your password"
-                className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                  focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                  transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                placeholder="••••••••"
+                className="w-full pl-[46px] pr-12 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                  focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                  transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 text-[#7C97BB] hover:text-[#4A678E] transition-colors"
+                className="absolute right-4 text-[#5B779E] hover:text-[#0D245B] transition-colors"
               >
                 {showConfirmPassword ? (
-                  <EyeOff className="w-[18px] h-[18px]" strokeWidth={2} />
+                  <EyeOff className="w-5 h-5" strokeWidth={2.5} />
                 ) : (
-                  <Eye className="w-[18px] h-[18px]" strokeWidth={2} />
+                  <Eye className="w-5 h-5" strokeWidth={2.5} />
                 )}
               </button>
             </div>
           </div>
 
-          <div className="space-y-[6px]">
-            <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+          <div className="space-y-2">
+            <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
               Role
             </label>
             <div className="relative flex items-center">
               <User
-                className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                strokeWidth={1.5}
+                className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                strokeWidth={2.5}
               />
               <select
                 defaultValue=""
                 required
-                className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                  focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                  transition-all text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none"
+                className="w-full pl-[46px] pr-12 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                  focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                  transition-all text-[#0D245B] text-[13px] font-black shadow-sm appearance-none"
               >
-                <option value="" disabled hidden className="text-[#8AA6CA]">
-                  Select your role
+                <option value="" disabled hidden>
+                  SELECT YOUR ROLE
                 </option>
                 <option value="student">Student</option>
                 <option value="mentor">Mentor</option>
               </select>
-              <div className="absolute right-4 pointer-events-none text-[#7C97BB]">
-                <ChevronDown className="w-5 h-5" strokeWidth={1.5} />
+              <div className="absolute right-4 pointer-events-none text-[#5B779E]">
+                <ChevronDown className="w-5 h-5" strokeWidth={2.5} />
               </div>
             </div>
           </div>
 
           {/* Options Row */}
           <div className="flex items-center justify-between pt-1 pb-1">
-            <label className="flex items-center gap-[8px] cursor-pointer group">
+            <label className="flex items-center gap-[10px] cursor-pointer group">
               <input
                 required
                 type="checkbox"
@@ -338,16 +338,16 @@ export default function SignUp() {
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
               />
               <div
-                className={`w-5 h-5 rounded-md flex items-center justify-center backdrop-blur-md transition-all group-active:scale-95 ${
+                className={`w-5 h-5 rounded-md flex items-center justify-center transition-all group-active:scale-95 ${
                   agreedToTerms
-                    ? "bg-[#2481FF]/60 border border-white/50 text-white shadow-[0_2px_8px_rgba(36,129,255,0.3),_inset_0_1px_1px_rgba(255,255,255,0.4)]"
-                    : "bg-white/40 border border-white/60 text-transparent hover:bg-white/50"
+                    ? "bg-[#0D245B] border border-[#0D245B] text-white shadow-sm"
+                    : "bg-slate-50 border border-slate-200 text-transparent hover:border-slate-300"
                 }`}
               >
-                <Check className="w-[14px] h-[14px]" strokeWidth={3} />
+                <Check className="w-[14px] h-[14px]" strokeWidth={4} />
               </div>
-              <span className="text-[14px] font-medium text-[#5B779E] group-hover:text-[#4A678E] transition-colors">
-                I agree to the Terms
+              <span className="text-[12px] font-black text-[#5B779E] uppercase tracking-widest transition-colors">
+                I AGREE TO THE TERMS
               </span>
             </label>
           </div>
@@ -355,61 +355,45 @@ export default function SignUp() {
           {/* Main Action Button */}
           <button
             type="submit"
-            className="w-full pt-[15px] pb-[15px] rounded-2xl text-white font-bold text-[15.5px] tracking-wide 
-              bg-gradient-to-r from-[#3A92FF]/90 to-[#1268FF]/90 backdrop-blur-[40px] border border-[#8BBEFF]
-              hover:from-[#499BFF]/90 hover:to-[#1C71FF]/90 hover:brightness-110
-              shadow-[0_10px_32px_rgba(30,110,255,0.4),_inset_0_2px_6px_rgba(255,255,255,0.6),_inset_0_-2px_6px_rgba(0,0,0,0.15)]
-              hover:shadow-[0_12px_48px_rgba(30,110,255,0.55),_inset_0_2px_6px_rgba(255,255,255,0.9),_inset_0_-2px_6px_rgba(0,0,0,0.15)]
-              active:scale-[0.98] active:shadow-[0_4px_16px_rgba(30,110,255,0.3)]
-              transition-all duration-300 flex items-center justify-center gap-[6px]
-              relative overflow-hidden group
-              before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/30 before:to-transparent before:pointer-events-none"
+            className="w-full py-4 rounded-[24px] text-white font-black text-[13px] uppercase tracking-[0.2em]
+              bg-[#0D245B] hover:bg-[#0D3694]
+              shadow-[0_20px_40px_-10px_rgba(13,36,91,0.3)]
+              active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
           >
-            <div className="absolute inset-y-0 w-1/2 -ml-10 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-            <span className="relative z-10 flex items-center justify-center gap-[6px] drop-shadow-md">
-              SIGN UP{" "}
-              <span className="font-sans ml-1 text-lg leading-none">
-                &rarr;
-              </span>
-            </span>
+            <span>Create Account</span>
+            <span className="text-lg">&rarr;</span>
           </button>
         </form>
 
         {/* Social Login Divider */}
         <div className="w-full flex items-center gap-4 mt-8 mb-6">
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-slate-300/60 to-slate-300/60"></div>
-          <span className="text-[13px] text-[#7C97BB] font-medium">
+          <div className="flex-1 h-[1px] bg-slate-100"></div>
+          <span className="text-[10px] text-[#5B779E] font-black uppercase tracking-[0.2em]">
             Or continue with
           </span>
-          <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-slate-300/60 to-slate-300/60"></div>
+          <div className="flex-1 h-[1px] bg-slate-100"></div>
         </div>
 
         {/* Social Buttons */}
         <div className="w-full">
           <button
-            className="w-full flex justify-center items-center gap-2.5 py-3 px-4 rounded-2xl
-            bg-white/20 backdrop-blur-[30px] border border-white/50 hover:bg-white/40 transition-all duration-300
-            shadow-[0_8px_32px_0_rgba(30,100,200,0.1),_inset_0_1px_1px_rgba(255,255,255,0.9),_inset_0_-1px_1px_rgba(0,0,0,0.05)]
-            hover:shadow-[0_12px_40px_rgba(30,100,200,0.15),_inset_0_1px_1px_rgba(255,255,255,1),_inset_0_-1px_1px_rgba(0,0,0,0.05)]
-            active:scale-[0.98] relative overflow-hidden group
-            before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/10 before:to-transparent before:pointer-events-none"
+            className="w-full flex justify-center items-center gap-3 py-4 px-4 rounded-[20px]
+            bg-slate-50/50 border border-slate-100 hover:bg-white hover:border-slate-200 
+            transition-all duration-300 shadow-sm active:scale-[0.98]"
           >
-            <div className="absolute inset-y-0 w-1/2 -ml-10 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-            <span className="relative z-10 flex justify-center items-center gap-2.5">
-              <GoogleIcon />
-              <span className="text-[13.5px] font-semibold text-[#4A678E]">
-                Continue with Google
-              </span>
+            <GoogleIcon />
+            <span className="text-[13px] font-black text-[#0D245B] uppercase tracking-widest">
+              Google
             </span>
           </button>
         </div>
 
         {/* Footer */}
-        <div className="mt-8 text-[14.5px] font-medium text-[#5B779E] text-center">
+        <div className="mt-8 text-[11px] font-black text-[#5B779E] text-center uppercase tracking-widest">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-semibold text-[#1A73E8] hover:text-[#1557A0] transition-colors ml-1"
+            className="text-[#3A92FF] hover:text-[#0D245B] transition-colors ml-1"
           >
             Login
           </Link>

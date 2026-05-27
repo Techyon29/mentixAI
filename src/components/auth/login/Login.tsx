@@ -243,16 +243,16 @@ export default function Login() {
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <Logo />
-          <span className="text-[24px] font-bold text-[#0D245B] tracking-tight">
+          <span className="text-[20px] font-black text-[#0D245B] tracking-tight uppercase">
             Mentix AI
           </span>
         </div>
 
         <div className="text-center mb-8">
-          <h2 className="text-[32px] font-bold text-[#0D245B] mb-2 tracking-tight">
+          <h2 className="text-[28px] font-black text-[#0D245B] mb-2 tracking-tighter uppercase">
             {header.title}
           </h2>
-          <p className="text-[#5B779E] text-[15.5px] font-medium">
+          <p className="text-[#5B779E] text-[13px] font-black uppercase tracking-widest">
             {header.desc}
           </p>
         </div>
@@ -291,81 +291,77 @@ export default function Login() {
 
         <form className="w-full space-y-[22px]" onSubmit={handleSubmit}>
           {(view === "login" || view === "forgot_email") && (
-            <div className="space-y-[6px]">
-              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+            <div className="space-y-2">
+              <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
                 Email address
               </label>
               <div className="relative flex items-center">
                 <Mail
-                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                  strokeWidth={1.5}
+                  className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                  strokeWidth={2.5}
                 />
                 <input
                   type="email"
                   required
-                  placeholder="Enter your registered email"
-                  className="w-full pl-[46px] pr-4 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                    transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                  placeholder="name@university.edu"
+                  className="w-full pl-[46px] pr-4 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                    focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                    transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
                 />
               </div>
             </div>
           )}
 
           {view === "forgot_otp" && (
-            <div className="space-y-[6px]">
-              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+            <div className="space-y-2">
+              <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
                 One-Time Password (OTP)
               </label>
               <div className="relative flex items-center">
                 <Lock
-                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                  strokeWidth={1.5}
+                  className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                  strokeWidth={2.5}
                 />
                 <input
                   type="text"
                   required
                   maxLength={6}
                   placeholder="Enter 6-digit OTP"
-                  className="w-full pl-[46px] pr-4 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                    transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                  className="w-full pl-[46px] pr-4 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                    focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                    transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
                 />
               </div>
             </div>
           )}
 
           {(view === "login" || view === "forgot_reset") && (
-            <div className="space-y-[6px]">
-              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+            <div className="space-y-2">
+              <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">
                 {view === "forgot_reset" ? "New Password" : "Password"}
               </label>
               <div className="relative flex items-center">
                 <Lock
-                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
-                  strokeWidth={1.5}
+                  className="absolute left-4 w-5 h-5 text-[#5B779E]"
+                  strokeWidth={2.5}
                 />
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  placeholder={
-                    view === "forgot_reset"
-                      ? "Enter new password"
-                      : "Enter your password"
-                  }
-                  className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
-                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
-                    transition-all placeholder:text-[#8AA6CA] text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                  placeholder="••••••••"
+                  className="w-full pl-[46px] pr-12 py-4 rounded-[20px] bg-slate-50/50 border border-slate-100 
+                    focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-200 focus:bg-white
+                    transition-all placeholder:text-[#5B779E]/40 text-[#0D245B] text-[13px] font-black shadow-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 text-[#7C97BB] hover:text-[#4A678E] transition-colors"
+                  className="absolute right-4 text-[#5B779E] hover:text-[#0D245B] transition-colors"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-[18px] h-[18px]" strokeWidth={2} />
+                    <EyeOff className="w-5 h-5" strokeWidth={2.5} />
                   ) : (
-                    <Eye className="w-[18px] h-[18px]" strokeWidth={2} />
+                    <Eye className="w-5 h-5" strokeWidth={2.5} />
                   )}
                 </button>
               </div>
@@ -444,23 +440,13 @@ export default function Login() {
           {/* Main Action Button */}
           <button
             type="submit"
-            className="w-full pt-[15px] pb-[15px] rounded-2xl text-white font-bold text-[15.5px] tracking-wide 
-              bg-gradient-to-r from-[#3A92FF]/90 to-[#1268FF]/90 backdrop-blur-[40px] border border-[#8BBEFF]
-              hover:from-[#499BFF]/90 hover:to-[#1C71FF]/90 hover:brightness-110
-              shadow-[0_10px_32px_rgba(30,110,255,0.4),_inset_0_2px_6px_rgba(255,255,255,0.6),_inset_0_-2px_6px_rgba(0,0,0,0.15)]
-              hover:shadow-[0_12px_48px_rgba(30,110,255,0.55),_inset_0_2px_6px_rgba(255,255,255,0.9),_inset_0_-2px_6px_rgba(0,0,0,0.15)]
-              active:scale-[0.98] active:shadow-[0_4px_16px_rgba(30,110,255,0.3)]
-              transition-all duration-300 flex items-center justify-center gap-[6px]
-              relative overflow-hidden group
-              before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/30 before:to-transparent before:pointer-events-none"
+            className="w-full py-4 rounded-[24px] text-white font-black text-[13px] uppercase tracking-[0.2em]
+              bg-[#0D245B] hover:bg-[#0D3694]
+              shadow-[0_20px_40px_-10px_rgba(13,36,91,0.3)]
+              active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
           >
-            <div className="absolute inset-y-0 w-1/2 -ml-10 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-            <span className="relative z-10 flex items-center justify-center gap-[6px] drop-shadow-md">
-              {getButtonText()}{" "}
-              <span className="font-sans ml-1 text-lg leading-none">
-                &rarr;
-              </span>
-            </span>
+            <span>{getButtonText()}</span>
+            <span className="text-lg">&rarr;</span>
           </button>
         </form>
 
@@ -468,29 +454,23 @@ export default function Login() {
           <>
             {/* Social Login Divider */}
             <div className="w-full flex items-center gap-4 mt-8 mb-6">
-              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-slate-300/60 to-slate-300/60"></div>
-              <span className="text-[13px] text-[#7C97BB] font-medium">
-                Or continue with
+              <div className="flex-1 h-[1px] bg-slate-100"></div>
+              <span className="text-[10px] text-[#5B779E] font-black uppercase tracking-widest">
+                Or connect via
               </span>
-              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-slate-300/60 to-slate-300/60"></div>
+              <div className="flex-1 h-[1px] bg-slate-100"></div>
             </div>
 
             {/* Social Buttons */}
             <div className="w-full">
               <button
-                className="w-full flex justify-center items-center gap-2.5 py-3 px-4 rounded-2xl
-                bg-white/20 backdrop-blur-[30px] border border-white/50 hover:bg-white/40 transition-all duration-300
-                shadow-[0_8px_32px_0_rgba(30,100,200,0.1),_inset_0_1px_1px_rgba(255,255,255,0.9),_inset_0_-1px_1px_rgba(0,0,0,0.05)]
-                hover:shadow-[0_12px_40px_rgba(30,100,200,0.15),_inset_0_1px_1px_rgba(255,255,255,1),_inset_0_-1px_1px_rgba(0,0,0,0.05)]
-                active:scale-[0.98] relative overflow-hidden group
-                before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/10 before:to-transparent before:pointer-events-none"
+                className="w-full flex justify-center items-center gap-3 py-4 rounded-[24px]
+                bg-white border border-slate-100 hover:bg-slate-50 transition-all duration-300
+                shadow-sm active:scale-[0.98]"
               >
-                <div className="absolute inset-y-0 w-1/2 -ml-10 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-                <span className="relative z-10 flex justify-center items-center gap-2.5">
-                  <GoogleIcon />
-                  <span className="text-[13.5px] font-semibold text-[#4A678E]">
-                    Continue with Google
-                  </span>
+                <GoogleIcon />
+                <span className="text-[11px] font-black text-[#5B779E] uppercase tracking-widest">
+                  Continue with Google
                 </span>
               </button>
             </div>
