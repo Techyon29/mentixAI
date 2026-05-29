@@ -52,7 +52,9 @@ const PreExamSetup: React.FC<PreExamSetupProps> = ({ onComplete, testName }) => 
         stream.getTracks().forEach(track => track.stop());
       }
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      if (audioContextRef.current) audioContextRef.current.close();
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+      }
     };
   }, [stream]);
 

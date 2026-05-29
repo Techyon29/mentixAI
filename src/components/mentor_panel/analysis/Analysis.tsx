@@ -6,57 +6,51 @@ import {
   GraduationCap, Sparkles, User, List, CheckCircle2, Loader2, Brain, X, Rocket
 } from "lucide-react";
 import Image from "next/image";
-import Sidebar from "../Sidebar";
-import Navbar from "../Navbar";
-
-const BackgroundOrbs = () => (
-  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-    <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-gradient-to-br from-[#E0EFFF] to-[#C9E0FC] blur-[100px] opacity-70" />
-    <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#E8F3FF] to-[#D4E8FF] blur-[80px] opacity-60" />
-    <div className="absolute bottom-[-10%] right-[30%] w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-[#E6F0F9] to-[#CCE3FA] blur-[120px] opacity-80" />
-  </div>
-);
+import MentorLayout from "../MentorLayout";
 
 const StatCard = ({ title, value, subtitle, color }: { title: string, value: string, subtitle: string, color: string }) => (
-  <div className="bg-white/60 backdrop-blur-md border border-white/60 rounded-[24px] p-6 shadow-sm hover:shadow-md transition-all">
-    <p className="text-[13px] font-bold text-blue-600 mb-2 uppercase tracking-wide">{title}</p>
-    <h3 className={`text-[32px] font-black ${color} mb-1`}>{value}</h3>
-    <p className="text-[12.5px] font-medium text-slate-400">{subtitle}</p>
+  <div className="bg-white border border-slate-100 rounded-[20px] md:rounded-[28px] p-4 md:p-6 shadow-sm hover:shadow-md transition-all">
+    <p className="text-[9px] md:text-[11px] font-black text-[#5B779E] mb-1 md:mb-2 uppercase tracking-widest">{title}</p>
+    <div className="flex items-baseline gap-2">
+      <h3 className={`text-[22px] md:text-[28px] font-black ${color} tracking-tight uppercase`}>{value}</h3>
+      <span className="text-[9px] md:text-[11px] font-black text-emerald-500 uppercase tracking-widest">+12.5%</span>
+    </div>
+    <p className="text-[9px] md:text-[11px] font-black text-[#5B779E] mt-1 uppercase tracking-widest">{subtitle}</p>
   </div>
 );
 
 const TopicItem = ({ icon: Icon, title, percentage, priorityText, priorityColor, iconBg, iconColor }: any) => (
-  <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-white/40 transition-all border border-transparent hover:border-white/60 group">
-    <div className="flex items-center gap-4">
-      <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shadow-sm`}>
-        <Icon className={`w-5 h-5 ${iconColor}`} />
+  <div className="flex items-center justify-between p-3 md:p-5 bg-slate-50/50 rounded-[18px] md:rounded-[24px] hover:bg-white hover:border-slate-100 transition-all border border-transparent shadow-sm group">
+    <div className="flex items-center gap-3 md:gap-4">
+      <div className={`w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl ${iconBg} flex items-center justify-center border border-current/10 shadow-sm transition-transform group-hover:scale-105`}>
+        <Icon className={`w-4 h-4 md:w-5 md:h-5 ${iconColor}`} strokeWidth={2.5} />
       </div>
       <div>
-        <h4 className="text-[14.5px] font-bold text-[#0D245B] group-hover:text-blue-600 transition-colors">{title}</h4>
-        <p className="text-[12px] text-slate-400 font-medium">{percentage}% of students struggling</p>
+        <h4 className="text-[11px] md:text-[13px] font-black text-[#0D245B] uppercase tracking-tight">{title}</h4>
+        <p className="text-[9px] md:text-[11px] text-[#5B779E] font-black uppercase tracking-widest mt-0.5">{percentage}% students struggling</p>
       </div>
     </div>
-    <span className={`text-[11px] font-bold ${priorityColor}`}>
+    <span className={`text-[8px] md:text-[9px] font-black px-1.5 md:px-2 py-1 rounded-lg uppercase tracking-[0.15em] border border-current/10 ${priorityColor} ${iconBg}`}>
       {priorityText}
     </span>
   </div>
 );
 
 const PerformanceItem = ({ title, avgScore, status, icon: Icon, bgColor, iconColor }: any) => (
-  <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-white/40 transition-all border border-transparent hover:border-white/60 group">
-    <div className="flex items-center gap-4">
-      <div className={`w-10 h-10 rounded-xl ${bgColor} flex items-center justify-center shadow-sm`}>
-        <Icon className={`w-5 h-5 ${iconColor}`} />
+  <div className="flex items-center justify-between p-3 md:p-5 bg-slate-50/50 rounded-[18px] md:rounded-[24px] hover:bg-white hover:border-slate-100 transition-all border border-transparent shadow-sm group">
+    <div className="flex items-center gap-3 md:gap-4">
+      <div className={`w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl ${bgColor} flex items-center justify-center border border-current/20 shadow-sm transition-transform group-hover:scale-105`}>
+        <Icon className={`w-4 h-4 md:w-5 md:h-5 ${iconColor}`} strokeWidth={2.5} />
       </div>
       <div>
-        <h4 className="text-[14.5px] font-bold text-[#0D245B] group-hover:text-blue-600 transition-colors">{title}</h4>
-        <p className="text-[12px] text-slate-400 font-medium">Avg Score: {avgScore}</p>
+        <h4 className="text-[11px] md:text-[13px] font-black text-[#0D245B] uppercase tracking-tight">{title}</h4>
+        <p className="text-[9px] md:text-[11px] text-[#5B779E] font-black uppercase tracking-widest mt-0.5">AVG SCORE: {avgScore}</p>
       </div>
     </div>
-    <span className={`px-2.5 py-1 rounded-lg text-[11px] font-bold ${
+    <span className={`px-2 py-1 rounded-lg text-[8px] md:text-[9px] font-black uppercase tracking-[0.15em] border ${
       status === 'Live' 
-        ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' 
-        : 'bg-blue-50 text-[#2A75FF] border border-blue-100'
+        ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
+        : 'bg-blue-50 text-[#0D245B] border-blue-100'
     }`}>
       {status}
     </span>
@@ -129,64 +123,56 @@ export default function Analysis() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#F0F5FA] overflow-hidden font-sans text-slate-800">
-      <BackgroundOrbs />
-
-      <div className="relative z-10 flex h-screen p-4 gap-6">
-        <Sidebar />
-
-        <main className="flex-1 flex flex-col h-full overflow-y-auto pr-2 pb-10 custom-scrollbar">
-          <Navbar />
-
+    <MentorLayout>
           {/* Header Section */}
-          <section className="mb-8 px-2 mt-4">
-            <div className="flex items-center gap-3 mb-2 bg-white/40 backdrop-blur-sm border border-white/60 rounded-full px-4 py-1.5 w-fit">
-               <Search className="w-4 h-4 text-slate-400" />
+          <section className="mb-4 md:mb-6 px-1 mt-4">
+            <div className="flex items-center gap-3 mb-2 bg-slate-50 border border-slate-100 rounded-2xl px-4 md:px-5 py-2 md:py-3 w-full md:w-fit shadow-sm">
+               <Search className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#5B779E] shrink-0" strokeWidth={2.5} />
                <input 
                  type="text" 
                  placeholder="Search tests, students, topics..." 
-                 className="bg-transparent border-none outline-none text-[13.5px] font-medium text-[#0D245B] placeholder:text-slate-400 w-64"
+                 className="bg-transparent border-none outline-none text-[11px] md:text-[13px] font-black text-[#0D245B] placeholder:text-slate-400 w-full md:w-64 uppercase tracking-tight"
                />
             </div>
             
-            <div className="flex justify-between items-end mt-6">
-              <div>
-                <h1 className="text-[32px] font-black text-[#0D245B] tracking-tight">Analysis Overview</h1>
-                <p className="text-slate-500 font-medium text-[15px] mt-1">
-                  Deep insights to help you improve learning outcomes.
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mt-6 md:mt-8 gap-4 md:gap-6">
+              <div className="w-full">
+                <h1 className="text-[18px] md:text-2xl font-black text-[#0D245B] tracking-tight uppercase">Analysis Overview</h1>
+                <p className="text-[#5B779E] font-black text-[9px] md:text-[12px] mt-1 uppercase tracking-[0.15em]">
+                  Deep insights for better outcomes.
                 </p>
               </div>
 
-              <div className="flex gap-4">
-                <div className="space-y-1">
-                  <p className="text-[11px] font-bold text-slate-400 px-1 uppercase tracking-wider">Select Test</p>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full md:w-auto mt-2 md:mt-0">
+                <div className="space-y-1.5 w-full sm:w-auto">
+                  <p className="text-[9px] md:text-[11px] font-black text-[#5B779E] px-2 uppercase tracking-widest">Select Test</p>
                   <div className="relative">
                     <select 
                       value={selectedTest}
                       onChange={(e) => setSelectedTest(e.target.value)}
-                      className="bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-2.5 text-[14px] font-bold text-[#0D245B] appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all shadow-sm min-w-[180px]"
+                      className="w-full bg-white border border-slate-100 rounded-xl pl-3 md:pl-4 pr-8 md:pr-10 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all shadow-sm min-w-[140px] md:min-w-[200px] uppercase tracking-tight"
                     >
                       <option>All Tests</option>
                       <option>Quadratic Equations</option>
                       <option>Trigonometry</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 pointer-events-none" />
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <p className="text-[11px] font-bold text-slate-400 px-1 uppercase tracking-wider">Select Class</p>
+                <div className="space-y-1.5 w-full sm:w-auto">
+                  <p className="text-[9px] md:text-[11px] font-black text-[#5B779E] px-2 uppercase tracking-widest">Select Class</p>
                   <div className="relative">
                     <select 
                       value={selectedClass}
                       onChange={(e) => setSelectedClass(e.target.value)}
-                      className="bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-2.5 text-[14px] font-bold text-[#0D245B] appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all shadow-sm min-w-[180px]"
+                      className="w-full bg-white border border-slate-100 rounded-xl pl-3 md:pl-4 pr-8 md:pr-10 py-2 md:py-3 text-[11px] md:text-[13px] font-black text-[#0D245B] appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all shadow-sm min-w-[140px] md:min-w-[200px] uppercase tracking-tight"
                     >
                       <option>All Classes</option>
                       <option>Class 10</option>
                       <option>Class 11</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -194,11 +180,11 @@ export default function Analysis() {
           </section>
 
           {/* Content Grid */}
-          <section className="grid grid-cols-2 gap-8 px-2 mb-8">
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 px-1 mb-10">
             {/* Left: Top Weak Topics */}
-            <div className="bg-white/40 backdrop-blur-md border border-white/60 rounded-[32px] p-8 shadow-sm">
-              <h3 className="text-[18px] font-black text-[#0D245B] mb-6 px-1">Top Weak Topics</h3>
-              <div className="space-y-3">
+            <div className="bg-white border border-slate-100 rounded-[24px] md:rounded-[32px] p-5 md:p-8 shadow-sm">
+              <h3 className="text-[9px] md:text-[11px] font-black text-[#5B779E] mb-4 md:mb-6 px-2 uppercase tracking-widest">Top Weak Topics</h3>
+              <div className="space-y-3 md:space-y-4">
                 {weakTopicsList.map((topic, index) => (
                   <TopicItem 
                     key={index}
@@ -215,11 +201,11 @@ export default function Analysis() {
             </div>
 
             {/* Right: Recent Test Performance */}
-            <div className="bg-white/40 backdrop-blur-md border border-white/60 rounded-[32px] p-8 shadow-sm">
-              <h3 className="text-[18px] font-black text-[#0D245B] mb-6 px-1">Recent Test Performance</h3>
-              <div className="space-y-3">
+            <div className="bg-white border border-slate-100 rounded-[24px] md:rounded-[32px] p-5 md:p-8 shadow-sm">
+              <h3 className="text-[9px] md:text-[11px] font-black text-[#5B779E] mb-4 md:mb-6 px-2 uppercase tracking-widest">Recent Performance</h3>
+              <div className="space-y-3 md:space-y-4">
                 <PerformanceItem 
-                  title="Quadratic Equations - Quiz 1" 
+                  title="Quadratic - Quiz 1" 
                   avgScore="68%" 
                   status="Live" 
                   icon={List}
@@ -227,15 +213,15 @@ export default function Analysis() {
                   iconColor="text-blue-500"
                 />
                 <PerformanceItem 
-                  title="Cell Structure & Functions" 
+                  title="Cell Structure" 
                   avgScore="72%" 
                   status="Completed" 
                   icon={User}
-                  bgColor="bg-blue-100/50"
-                  iconColor="text-[#2A75FF]"
+                  bgColor="bg-slate-50"
+                  iconColor="text-[#0D245B]"
                 />
                 <PerformanceItem 
-                  title="Photosynthesis Process" 
+                  title="Photosynthesis" 
                   avgScore="60%" 
                   status="Live" 
                   icon={Microscope}
@@ -247,118 +233,98 @@ export default function Analysis() {
                   avgScore="70%" 
                   status="Completed" 
                   icon={Atom}
-                  bgColor="bg-blue-100/50"
-                  iconColor="text-[#2A75FF]"
+                  bgColor="bg-slate-50"
+                  iconColor="text-[#0D245B]"
                 />
               </div>
             </div>
           </section>
 
-          {/* AI Insight Banner - Borderless & Magical */}
-          <section className="px-6 relative mt-16 mb-12 w-full">
-            {/* Ethereal Glow Background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-300/10 via-blue-400/10 to-blue-300/10 blur-[60px] pointer-events-none" />
+          {/* AI Insight Banner */}
+          <section className="px-2 relative mt-10 md:mt-16 mb-10 md:mb-16 w-full">
+            <div className="absolute inset-0 bg-blue-100/30 blur-[100px] pointer-events-none" />
             
-            <div className="relative z-10 flex items-center justify-between">
-              <div className="flex items-center gap-8 max-w-[75%]">
-                
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 text-center lg:text-left p-6 md:p-10 rounded-[28px] md:rounded-[40px] bg-[#0D245B] shadow-2xl overflow-hidden group">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -mr-32 -mt-32 transition-transform group-hover:scale-150 duration-700" />
+              
+              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-8 max-w-full lg:max-w-[70%] relative z-10">
                 {/* Glowing AI Orb */}
                 <div className="relative flex items-center justify-center shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-blue-600 rounded-full blur-[24px] animate-pulse" />
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#2A75FF] to-[#0D3694] flex items-center justify-center relative shadow-[0_0_40px_rgba(42,117,255,0.4)] border border-white/20">
-                    <Sparkles className="w-7 h-7 text-white" />
+                  <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-[25px] animate-pulse" />
+                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-[20px] md:rounded-[24px] bg-white/10 backdrop-blur-md flex items-center justify-center relative shadow-lg border border-white/20">
+                    <Sparkles className="w-7 h-7 md:w-10 md:h-10 text-blue-400" strokeWidth={2.5} />
                   </div>
                 </div>
                 
-                {/* Immersive Text */}
                 <div>
-                  <h2 className="text-[20px] font-black tracking-tight flex items-center gap-3 mb-2">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-[#0D3694]">
-                      AI Analysis Detected a Pattern
-                    </span>
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                    </span>
+                  <h2 className="text-[10px] md:text-[13px] font-black tracking-[0.2em] text-blue-400 gap-2 mb-2 md:mb-3 uppercase">
+                    AI PATTERN DETECTED
                   </h2>
-                  <p className="text-[#0D245B] text-[17px] font-medium leading-relaxed">
-                    Most students are facing challenges with <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#0D3694] drop-shadow-sm">{topWeakTopic}</span>. 
-                    I recommend generating a personalized micro-test to address this learning gap.
+                  <p className="text-white text-[13px] md:text-[20px] font-black leading-tight uppercase tracking-tight">
+                    Most students are facing challenges with <span className="text-blue-400 underline decoration-blue-400/30 underline-offset-8">{topWeakTopic}</span>. 
                   </p>
                 </div>
               </div>
 
-              {/* Floating Action Button */}
-              <div className="flex shrink-0">
+              <div className="flex shrink-0 w-full lg:w-auto justify-center relative z-10">
                 <button 
                   onClick={handleGenerateTest}
-                  className="group relative pr-2 pl-6 py-2 bg-white/50 backdrop-blur-xl border border-white/80 rounded-full flex items-center gap-4 hover:bg-white/80 transition-all shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(42,117,255,0.15)] hover:-translate-y-0.5">
-                  <span className="font-black text-[#0D3694] text-[15px]">Generate Test</span>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#2A75FF] to-[#0D3694] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                    <Sparkles className="w-4 h-4 text-white group-hover:rotate-12 transition-transform" />
-                  </div>
+                  className="w-full lg:w-auto px-6 md:px-10 py-3 md:py-5 bg-white text-[#0D245B] rounded-[16px] md:rounded-[20px] font-black text-[11px] md:text-[13px] uppercase tracking-[0.2em] shadow-2xl hover:bg-blue-50 transition-all active:scale-95 whitespace-nowrap"
+                >
+                  Generate Test
                 </button>
               </div>
             </div>
-            
-            {/* Subtle Divider */}
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-400/30 to-transparent mt-12" />
           </section>
 
           {/* Auto-Generation Overlay Modal */}
           {isGenerating && (
-            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4 transform transition-all">
-              <div className="bg-white/95 backdrop-blur-2xl rounded-[32px] p-10 max-w-md w-full shadow-[0_30px_60px_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col items-center border border-white/50 animate-in zoom-in-[0.95] slide-in-from-bottom-4 duration-500 ease-out">
+            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-md px-4 transform transition-all">
+              <div className="bg-white rounded-[40px] p-12 max-w-md w-full shadow-2xl relative overflow-hidden flex flex-col items-center border border-white/50 animate-in zoom-in-95 duration-500">
                 {/* Background ambient orbs */}
-                <div className="absolute top-[-50px] right-[-50px] w-40 h-40 bg-blue-100/50 rounded-full blur-3xl animate-[spin_8s_linear_infinite]" />
-                <div className="absolute bottom-[-50px] left-[-50px] w-40 h-40 bg-purple-100/50 rounded-full blur-3xl animate-[spin_8s_linear_infinite_reverse]" />
+                <div className="absolute top-[-50px] right-[-50px] w-40 h-40 bg-blue-50 rounded-full blur-3xl" />
                 
                 {/* Master Brain Spinner */}
-                <div className="w-32 h-32 mb-8 relative flex items-center justify-center">
-                  {/* Outer rings */}
-                  <div className="absolute inset-0 border-[3px] border-dashed border-blue-200 rounded-full animate-[spin_8s_linear_infinite]" />
-                  <div className="absolute inset-2 border-[3px] border-transparent border-t-[#2A75FF] border-r-[#0D3694] rounded-full animate-[spin_1.5s_linear_infinite]" />
-                  <div className="absolute inset-4 border-[3px] border-transparent border-b-[#2A75FF] border-l-[#0D3694] rounded-full animate-[spin_2s_linear_infinite_reverse] opacity-70" />
+                <div className="w-32 h-32 mb-10 relative flex items-center justify-center">
+                  <div className="absolute inset-0 border-[4px] border-dashed border-blue-50 rounded-full animate-[spin_10s_linear_infinite]" />
+                  <div className="absolute inset-2 border-[4px] border-transparent border-t-blue-600 border-r-blue-900 rounded-full animate-[spin_1.5s_linear_infinite]" />
                   
-                  {/* Glowing Core */}
-                  <div className="w-16 h-16 bg-gradient-to-tr from-[#2A75FF] to-[#0D3694] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(42,117,255,0.5)] relative shrink-0">
-                    <div className="absolute inset-0 bg-white/20 rounded-full animate-ping opacity-50" />
-                    <Brain className="w-8 h-8 text-white relative z-10 animate-bounce" style={{ animationDuration: '2s' }} />
+                  <div className="w-16 h-16 bg-[#0D245B] rounded-full flex items-center justify-center shadow-2xl relative shrink-0">
+                    <Brain className="w-8 h-8 text-white relative z-10 animate-pulse" strokeWidth={2.5} />
                   </div>
                 </div>
 
-                <h3 className="text-[24px] font-black text-[#0D245B] mb-2 text-center tracking-tight animate-in fade-in slide-in-from-bottom-2 duration-500 delay-100">AI is Generating Test</h3>
-                <p className="text-[14px] text-slate-500 font-medium mb-10 text-center px-4 leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-500 delay-200">
-                  Analyzing <span className="font-bold text-[#0D3694]">{topWeakTopic}</span> and crafting perfectly balanced questions...
+                <h3 className="text-[24px] font-black text-[#0D245B] mb-2 text-center tracking-tight uppercase">AI Generating Test</h3>
+                <p className="text-[11px] text-[#5B779E] font-black mb-12 text-center px-4 leading-relaxed uppercase tracking-widest">
+                  Analyzing <span className="text-blue-600">{topWeakTopic}</span> and crafting perfectly balanced questions...
                 </p>
 
-                <div className="w-full space-y-5 relative z-10">
-                  {/* Vertical Progress Line */}
-                  <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-slate-100 -z-10 rounded-full" />
+                <div className="w-full space-y-6 relative z-10">
+                  <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-slate-50 -z-10 rounded-full" />
                   <div 
-                    className="absolute left-[15px] top-4 w-[2px] bg-gradient-to-b from-[#2A75FF] to-transparent -z-10 rounded-full transition-all duration-1000 ease-out"
+                    className="absolute left-[15px] top-4 w-[2px] bg-blue-600 -z-10 rounded-full transition-all duration-1000"
                     style={{ height: generationStep === 1 ? '30%' : generationStep === 2 ? '65%' : generationStep >= 3 ? '100%' : '0%' }}
                   />
 
-                  <div className={`flex items-center gap-5 transition-all duration-700 ease-out ${generationStep >= 1 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-colors duration-500 ${generationStep > 1 ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-[#2A75FF] text-[#2A75FF] shadow-[0_0_15px_rgba(42,117,255,0.3)]'}`}>
-                       {generationStep > 1 ? <CheckCircle2 className="w-5 h-5 animate-in zoom-in duration-300" /> : <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '3s' }} />}
+                  <div className={`flex items-center gap-5 transition-all duration-700 ${generationStep >= 1 ? 'opacity-100' : 'opacity-30'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-all ${generationStep > 1 ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-blue-600 text-blue-600 shadow-lg shadow-blue-500/20'}`}>
+                       {generationStep > 1 ? <CheckCircle2 className="w-5 h-5" /> : <Sparkles className="w-4 h-4 animate-spin" />}
                     </div>
-                    <span className={`text-[15px] font-bold transition-colors duration-500 ${generationStep > 1 ? 'text-emerald-600' : 'text-[#0D245B]'}`}>Analyzing Student Weaknesses</span>
+                    <span className={`text-[13px] font-black uppercase tracking-tight ${generationStep > 1 ? 'text-emerald-600' : 'text-[#0D245B]'}`}>Analyzing Weaknesses</span>
                   </div>
                   
-                  <div className={`flex items-center gap-5 transition-all duration-700 ease-out ${generationStep >= 2 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-colors duration-500 ${generationStep > 2 ? 'bg-emerald-500 border-emerald-500 text-white' : generationStep === 2 ? 'bg-white border-[#2A75FF] text-[#2A75FF] shadow-[0_0_15px_rgba(42,117,255,0.3)]' : 'bg-white border-slate-200 text-slate-300'}`}>
-                       {generationStep > 2 ? <CheckCircle2 className="w-5 h-5 animate-in zoom-in duration-300" /> : generationStep === 2 ? <Loader2 className="w-4 h-4 animate-spin" /> : <div className="w-2 h-2 bg-slate-200 rounded-full" />}
+                  <div className={`flex items-center gap-5 transition-all duration-700 ${generationStep >= 2 ? 'opacity-100' : 'opacity-30'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-all ${generationStep > 2 ? 'bg-emerald-500 border-emerald-500 text-white' : generationStep === 2 ? 'bg-white border-blue-600 text-blue-600 shadow-lg shadow-blue-500/20' : 'bg-white border-slate-200 text-slate-300'}`}>
+                       {generationStep > 2 ? <CheckCircle2 className="w-5 h-5" /> : generationStep === 2 ? <Loader2 className="w-4 h-4 animate-spin" /> : <div className="w-2 h-2 bg-slate-200 rounded-full" />}
                     </div>
-                    <span className={`text-[15px] font-bold transition-colors duration-500 ${generationStep > 2 ? 'text-emerald-600' : generationStep === 2 ? 'text-[#0D245B]' : 'text-slate-400'}`}>Formulating Questions</span>
+                    <span className={`text-[13px] font-black uppercase tracking-tight ${generationStep > 2 ? 'text-emerald-600' : generationStep === 2 ? 'text-[#0D245B]' : 'text-[#5B779E]'}`}>Formulating Questions</span>
                   </div>
 
-                  <div className={`flex items-center gap-5 transition-all duration-700 ease-out ${generationStep >= 3 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-colors duration-500 ${generationStep > 3 ? 'bg-emerald-500 border-emerald-500 text-white' : generationStep === 3 ? 'bg-white border-[#2A75FF] text-[#2A75FF] shadow-[0_0_15px_rgba(42,117,255,0.3)]' : 'bg-white border-slate-200 text-slate-300'}`}>
-                       {generationStep > 3 ? <CheckCircle2 className="w-5 h-5 animate-in zoom-in duration-300" /> : generationStep === 3 ? <Atom className="w-4 h-4 animate-[spin_4s_linear_infinite]" /> : <div className="w-2 h-2 bg-slate-200 rounded-full" />}
+                  <div className={`flex items-center gap-5 transition-all duration-700 ${generationStep >= 3 ? 'opacity-100' : 'opacity-30'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-all ${generationStep > 3 ? 'bg-emerald-500 border-emerald-500 text-white' : generationStep === 3 ? 'bg-white border-blue-600 text-blue-600 shadow-lg shadow-blue-500/20' : 'bg-white border-slate-200 text-slate-300'}`}>
+                       {generationStep > 3 ? <CheckCircle2 className="w-5 h-5" /> : generationStep === 3 ? <Atom className="w-4 h-4 animate-spin" /> : <div className="w-2 h-2 bg-slate-200 rounded-full" />}
                     </div>
-                    <span className={`text-[15px] font-bold transition-colors duration-500 ${generationStep > 3 ? 'text-emerald-600' : generationStep === 3 ? 'text-[#0D245B]' : 'text-slate-400'}`}>Generating Options & Answers</span>
+                    <span className={`text-[13px] font-black uppercase tracking-tight ${generationStep > 3 ? 'text-emerald-600' : generationStep === 3 ? 'text-[#0D245B]' : 'text-[#5B779E]'}`}>Generating Options</span>
                   </div>
                 </div>
               </div>
@@ -367,43 +333,35 @@ export default function Analysis() {
 
           {/* AI Generation Success Modal */}
           {showSuccess && (
-            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
-               <div className="bg-white/95 backdrop-blur-2xl rounded-[32px] p-10 max-w-md w-full shadow-[0_30px_60px_rgba(0,0,0,0.3)] relative text-center border border-white/50 animate-in zoom-in-[0.90] slide-in-from-bottom-8 duration-500 ease-out">
-                 {/* Success background glow */}
-                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-400/20 rounded-full blur-[80px] pointer-events-none" />
-                 
-                 <button onClick={() => setShowSuccess(false)} className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95 z-10">
-                   <X className="w-5 h-5 text-slate-400" />
+            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-md px-4">
+               <div className="bg-white rounded-[40px] p-12 max-w-md w-full shadow-2xl relative text-center border border-white/50 animate-in zoom-in-95 duration-500">
+                 <button onClick={() => setShowSuccess(false)} className="absolute top-8 right-8 p-2 hover:bg-slate-50 rounded-xl transition-all active:scale-95 z-10">
+                   <X className="w-5 h-5 text-slate-400" strokeWidth={2.5} />
                  </button>
                  
-                 <div className="relative mb-8 mt-2">
-                   <div className="w-24 h-24 bg-gradient-to-tr from-emerald-400 to-emerald-500 text-white rounded-full flex items-center justify-center mx-auto shadow-[0_0_40px_rgba(52,211,153,0.4)] animate-in zoom-in-50 duration-500 delay-100">
-                     <CheckCircle2 className="w-12 h-12" />
+                 <div className="relative mb-8 mt-4">
+                   <div className="w-24 h-24 bg-emerald-500 text-white rounded-[30px] flex items-center justify-center mx-auto shadow-2xl shadow-emerald-500/30">
+                     <CheckCircle2 className="w-12 h-12" strokeWidth={2.5} />
                    </div>
-                   {/* Confetti-like sparks */}
-                   <Sparkles className="absolute -top-2 right-[20%] w-8 h-8 text-emerald-400 animate-pulse drop-shadow-md" style={{ animationDelay: '0.2s' }} />
-                   <Sparkles className="absolute bottom-2 left-[20%] w-6 h-6 text-emerald-300 animate-pulse drop-shadow-md" style={{ animationDelay: '0.5s' }} />
+                   <Sparkles className="absolute -top-3 right-[20%] w-8 h-8 text-emerald-400 animate-pulse" />
                  </div>
                  
-                 <h3 className="text-[28px] font-black text-[#0D245B] mb-3 tracking-tight animate-in fade-in slide-in-from-bottom-2 duration-500 delay-200">Test Ready!</h3>
-                 <p className="text-[15px] text-slate-500 font-medium mb-10 px-2 leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-500 delay-300">
-                   Mentix AI has successfully generated a perfectly balanced 15-question micro-test focused exclusively on <span className="font-bold text-[#0D3694]">{topWeakTopic}</span>.
+                 <h3 className="text-[28px] font-black text-[#0D245B] mb-2 tracking-tight uppercase">Test Ready!</h3>
+                 <p className="text-[11px] text-[#5B779E] font-black mb-12 px-2 leading-relaxed uppercase tracking-widest">
+                   Mentix AI has successfully generated a perfectly balanced 15-question micro-test focused exclusively on <span className="text-blue-600">{topWeakTopic}</span>.
                  </p>
                  
-                 <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-500">
-                   <button onClick={() => setShowSuccess(false)} className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-[#0D3694] hover:from-blue-500 hover:to-blue-700 text-white font-black text-[15px] shadow-[0_8px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_12px_25px_rgba(37,99,235,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                 <div className="flex flex-col gap-4">
+                   <button onClick={() => setShowSuccess(false)} className="w-full py-5 rounded-[20px] bg-[#0D245B] hover:bg-[#0D3694] text-white font-black text-[13px] shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-[0.2em]">
                      <Rocket className="w-4 h-4" /> Publish Now
                    </button>
-                   <button onClick={() => setShowSuccess(false)} className="w-full py-4 rounded-2xl bg-[#F0F5FA] hover:bg-blue-50 text-[#0D245B] font-bold text-[15px] transition-all active:scale-95">
-                     Review Test Manually
+                   <button onClick={() => setShowSuccess(false)} className="w-full py-5 rounded-[20px] bg-slate-50 hover:bg-slate-100 text-[#0D245B] font-black text-[13px] transition-all active:scale-95 uppercase tracking-[0.2em]">
+                     Review Manually
                    </button>
                  </div>
                </div>
             </div>
           )}
-
-        </main>
-      </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
         .custom-scrollbar::-webkit-scrollbar {
@@ -424,6 +382,6 @@ export default function Analysis() {
           animation: fade-in 0.5s ease-out forwards;
         }
       `}} />
-    </div>
+    </MentorLayout>
   );
 }
