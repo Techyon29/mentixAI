@@ -258,7 +258,11 @@ export default function StudentDetails() {
     setIsMounted(true);
     const saved = localStorage.getItem("mentix_students");
     if (saved) {
-      setStudents(JSON.parse(saved));
+      try {
+        setStudents(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load students from localStorage", e);
+      }
     }
   }, []);
   const [loading, setLoading] = useState(false);
@@ -294,18 +298,7 @@ export default function StudentDetails() {
   const [messageText, setMessageText] = useState("");
   const [timelineEvents, setTimelineEvents] = useState(activityTimeline);
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("mentix_students");
-    if (saved) {
-      try {
-        setStudents(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to load students from localStorage", e);
-      }
-    }
-    setIsLoaded(true);
-  }, []);
+
 
   // Real-time Persistence
   useEffect(() => {
