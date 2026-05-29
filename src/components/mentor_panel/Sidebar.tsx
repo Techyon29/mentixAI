@@ -70,6 +70,7 @@ export default function Sidebar() {
             width={44}
             height={44}
             className="object-contain"
+            style={{ height: "auto" }}
           />
         </div>
         <span className="text-[17px] font-bold text-white tracking-tight">

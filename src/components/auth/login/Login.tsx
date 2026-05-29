@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Check,
   Eye,
@@ -10,9 +10,12 @@ import {
   CheckCircle2,
   AlertCircle,
   X,
+  ChevronDown,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export const GoogleIcon = () => (
   <svg
@@ -171,8 +174,29 @@ export default function Login() {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [userType, setUserType] = useState<"institute" | "teacher" | "student">("student");
+  const [institutes, setInstitutes] = useState<any[]>([]);
+  const [selectedInstitute, setSelectedInstitute] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchInstitutes = async () => {
+      try {
+        const res = await fetch("/api/institute");
+        const data = await res.json();
+        if (data.institutes) {
+          setInstitutes(data.institutes);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchInstitutes();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setNotification(null);
     if (view === "forgot_email") {
@@ -187,7 +211,39 @@ export default function Login() {
       });
       setView("login");
     } else if (view === "login") {
-      // Handle login logic here
+      const loginUrl =
+        userType === "institute"
+          ? "/api/auth/institute/login"
+          : userType === "teacher"
+          ? "/api/auth/teacher/login"
+          : "/api/auth/student/login";
+
+      try {
+        const res = await fetch(loginUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            password,
+            ...(userType !== "institute" && { instituteId: selectedInstitute }),
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          setNotification({ type: "error", message: data.error || "Login failed" });
+          return;
+        }
+
+        setNotification({ type: "success", message: "Login successful!" });
+        if (userType === "student") {
+          router.push("/student-dashboard");
+        } else {
+          router.push("/mentor-dashboard");
+        }
+      } catch (err: any) {
+        setNotification({ type: "error", message: "An error occurred during login." });
+      }
     }
   };
 
@@ -290,6 +346,69 @@ export default function Login() {
         )}
 
         <form className="w-full space-y-[22px]" onSubmit={handleSubmit}>
+          {view === "login" && (
+            <div className="space-y-[6px]">
+              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+                Role
+              </label>
+              <div className="relative flex items-center">
+                <User
+                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
+                  strokeWidth={1.5}
+                />
+                <select
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value as any)}
+                  required
+                  className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
+                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
+                    transition-all text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none"
+                >
+                  <option value="institute">Institute</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="student">Student</option>
+                </select>
+                <div className="absolute right-4 pointer-events-none text-[#7C97BB]">
+                  <ChevronDown className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {view === "login" && (userType === "teacher" || userType === "student") && (
+            <div className="space-y-[6px]">
+              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+                Select Institute
+              </label>
+              <div className="relative flex items-center">
+                <User
+                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
+                  strokeWidth={1.5}
+                />
+                <select
+                  value={selectedInstitute}
+                  onChange={(e) => setSelectedInstitute(e.target.value)}
+                  required
+                  className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
+                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
+                    transition-all text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none"
+                >
+                  <option value="" disabled hidden>
+                    Choose your institute
+                  </option>
+                  {institutes.map((inst) => (
+                    <option key={inst._id} value={inst._id}>
+                      {inst.instituteName}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 pointer-events-none text-[#7C97BB]">
+                  <ChevronDown className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+              </div>
+            </div>
+          )}
+
           {(view === "login" || view === "forgot_email") && (
             <div className="space-y-[6px]">
               <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
@@ -303,6 +422,8 @@ export default function Login() {
                 <input
                   type="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your registered email"
                   className="w-full pl-[46px] pr-4 py-3.5 rounded-2xl bg-white/40 border border-white/70 
                     focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
@@ -348,6 +469,8 @@ export default function Login() {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder={
                     view === "forgot_reset"
                       ? "Enter new password"
@@ -464,38 +587,7 @@ export default function Login() {
           </button>
         </form>
 
-        {view === "login" && (
-          <>
-            {/* Social Login Divider */}
-            <div className="w-full flex items-center gap-4 mt-8 mb-6">
-              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-slate-300/60 to-slate-300/60"></div>
-              <span className="text-[13px] text-[#7C97BB] font-medium">
-                Or continue with
-              </span>
-              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-slate-300/60 to-slate-300/60"></div>
-            </div>
-
-            {/* Social Buttons */}
-            <div className="w-full">
-              <button
-                className="w-full flex justify-center items-center gap-2.5 py-3 px-4 rounded-2xl
-                bg-white/20 backdrop-blur-[30px] border border-white/50 hover:bg-white/40 transition-all duration-300
-                shadow-[0_8px_32px_0_rgba(30,100,200,0.1),_inset_0_1px_1px_rgba(255,255,255,0.9),_inset_0_-1px_1px_rgba(0,0,0,0.05)]
-                hover:shadow-[0_12px_40px_rgba(30,100,200,0.15),_inset_0_1px_1px_rgba(255,255,255,1),_inset_0_-1px_1px_rgba(0,0,0,0.05)]
-                active:scale-[0.98] relative overflow-hidden group
-                before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/10 before:to-transparent before:pointer-events-none"
-              >
-                <div className="absolute inset-y-0 w-1/2 -ml-10 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-                <span className="relative z-10 flex justify-center items-center gap-2.5">
-                  <GoogleIcon />
-                  <span className="text-[13.5px] font-semibold text-[#4A678E]">
-                    Continue with Google
-                  </span>
-                </span>
-              </button>
-            </div>
-          </>
-        )}
+        
 
         {/* Footer */}
         <div className="mt-8 text-[14.5px] font-medium text-[#5B779E] text-center">

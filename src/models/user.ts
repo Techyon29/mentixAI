@@ -8,6 +8,7 @@ export interface IUser extends Document {
   instituteId?: mongoose.Types.ObjectId;
   profileImage?: string;
   isActive?: boolean;
+  extra?: Map<string, any>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -44,6 +45,10 @@ const UserSchema = new Schema<IUser>(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    extra: {
+      type: Map,
+      of: Schema.Types.Mixed,
     },
   },
   {
