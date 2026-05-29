@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Check,
   Eye,
@@ -10,9 +10,12 @@ import {
   CheckCircle2,
   AlertCircle,
   X,
+  ChevronDown,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export const GoogleIcon = () => (
   <svg
@@ -171,8 +174,29 @@ export default function Login() {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [userType, setUserType] = useState<"institute" | "teacher" | "student">("student");
+  const [institutes, setInstitutes] = useState<any[]>([]);
+  const [selectedInstitute, setSelectedInstitute] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchInstitutes = async () => {
+      try {
+        const res = await fetch("/api/institute");
+        const data = await res.json();
+        if (data.institutes) {
+          setInstitutes(data.institutes);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchInstitutes();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setNotification(null);
     if (view === "forgot_email") {
@@ -187,7 +211,39 @@ export default function Login() {
       });
       setView("login");
     } else if (view === "login") {
-      // Handle login logic here
+      const loginUrl =
+        userType === "institute"
+          ? "/api/auth/institute/login"
+          : userType === "teacher"
+          ? "/api/auth/teacher/login"
+          : "/api/auth/student/login";
+
+      try {
+        const res = await fetch(loginUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            password,
+            ...(userType !== "institute" && { instituteId: selectedInstitute }),
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          setNotification({ type: "error", message: data.error || "Login failed" });
+          return;
+        }
+
+        setNotification({ type: "success", message: "Login successful!" });
+        if (userType === "student") {
+          router.push("/student-dashboard");
+        } else {
+          router.push("/mentor-dashboard");
+        }
+      } catch (err: any) {
+        setNotification({ type: "error", message: "An error occurred during login." });
+      }
     }
   };
 
@@ -290,6 +346,69 @@ export default function Login() {
         )}
 
         <form className="w-full space-y-[22px]" onSubmit={handleSubmit}>
+          {view === "login" && (
+            <div className="space-y-[6px]">
+              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+                Role
+              </label>
+              <div className="relative flex items-center">
+                <User
+                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
+                  strokeWidth={1.5}
+                />
+                <select
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value as any)}
+                  required
+                  className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
+                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
+                    transition-all text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none"
+                >
+                  <option value="institute">Institute</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="student">Student</option>
+                </select>
+                <div className="absolute right-4 pointer-events-none text-[#7C97BB]">
+                  <ChevronDown className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {view === "login" && (userType === "teacher" || userType === "student") && (
+            <div className="space-y-[6px]">
+              <label className="block text-[14.5px] font-medium text-[#4A678E] ml-1">
+                Select Institute
+              </label>
+              <div className="relative flex items-center">
+                <User
+                  className="absolute left-4 w-5 h-5 text-[#7C97BB]"
+                  strokeWidth={1.5}
+                />
+                <select
+                  value={selectedInstitute}
+                  onChange={(e) => setSelectedInstitute(e.target.value)}
+                  required
+                  className="w-full pl-[46px] pr-12 py-3.5 rounded-2xl bg-white/40 border border-white/70 
+                    focus:outline-none focus:ring-[3px] focus:ring-blue-400/30 focus:border-blue-400/50 
+                    transition-all text-[#0D245B] font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none"
+                >
+                  <option value="" disabled hidden>
+                    Choose your institute
+                  </option>
+                  {institutes.map((inst) => (
+                    <option key={inst._id} value={inst._id}>
+                      {inst.instituteName}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 pointer-events-none text-[#7C97BB]">
+                  <ChevronDown className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+              </div>
+            </div>
+          )}
+
           {(view === "login" || view === "forgot_email") && (
             <div className="space-y-2">
               <label className="block text-[11px] font-black text-[#5B779E] ml-1 uppercase tracking-widest">

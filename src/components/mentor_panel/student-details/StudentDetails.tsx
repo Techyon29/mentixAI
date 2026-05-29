@@ -294,6 +294,19 @@ export default function StudentDetails() {
   const [messageText, setMessageText] = useState("");
   const [timelineEvents, setTimelineEvents] = useState(activityTimeline);
 
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("mentix_students");
+    if (saved) {
+      try {
+        setStudents(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load students from localStorage", e);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
   // Real-time Persistence
   useEffect(() => {
     if (isMounted) {
@@ -356,24 +369,63 @@ export default function StudentDetails() {
     window.URL.revokeObjectURL(url);
   };
 
-  const addStudent = (newStudent: any) => {
-    const studentWithId = {
-      ...newStudent,
-      id: Date.now(),
-      testsAttempted: 0,
-      avgScore: 0,
-      performance: "Average",
-      status: "Active",
-      lastActive: "Just now",
-      joinedDate: new Date().toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }),
-    };
-    setStudents([studentWithId, ...students]);
-    setShowAddModal(false);
+  const addStudent = async (newStudent: any) => {
+    try {
+      const res = await fetch("/api/teacher/student", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newStudent.name,
+          email: newStudent.email,
+          class: newStudent.class,
+          section: newStudent.section,
+          rollNo: Number(newStudent.rollNo),
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.error || "Failed to add student");
+        return;
+      }
+
+      const responseData = await res.json();
+      const savedStudent = responseData.student;
+      const extra = savedStudent.extra || {};
+
+      const studentWithId = {
+        id: savedStudent._id,
+        name: savedStudent.name,
+        email: savedStudent.email,
+        class: extra.class || newStudent.class,
+        section: extra.section || newStudent.section,
+        rollNo: extra.rollNo !== undefined ? Number(extra.rollNo) : Number(newStudent.rollNo),
+        testsAttempted: 0,
+        avgScore: 0,
+        performance: "Average",
+        status: savedStudent.isActive ? "Active" : "Inactive",
+        lastActive: "Just now",
+        joinedDate: new Date(savedStudent.createdAt).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+      };
+      setStudents([studentWithId, ...students]);
+      setShowAddModal(false);
+      setNotification({
+        msg: "Student record added successfully",
+        type: "success",
+      });
+      setTimeout(() => setNotification(null), 3000);
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while adding the student.");
+    }
   };
+
 
   const deleteStudent = (id: number) => {
     setStudents(students.filter((s) => s.id !== id));

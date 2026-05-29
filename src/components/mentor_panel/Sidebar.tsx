@@ -93,7 +93,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             width={28}
             height={28}
             className="object-contain"
-            style={{ width: 'auto', height: 'auto' }}
+            style={{ height: "auto" }}
           />
         </div>
         <span className="text-[13px] md:text-[15px] font-bold text-white tracking-tight">

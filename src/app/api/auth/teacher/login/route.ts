@@ -8,16 +8,16 @@ export async function POST(request: Request) {
   try {
     await connectDB();
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password, instituteId } = body;
 
-    if (!email || !password) {
+    if (!email || !password || !instituteId) {
       return NextResponse.json(
-        { error: "Email and password are required" },
+        { error: "Email, password, and institute are required" },
         { status: 400 }
       );
     }
 
-    const user = await User.findOne({ email, role: "teacher" });
+    const user = await User.findOne({ email, role: "teacher", instituteId });
 
     if (!user) {
       return NextResponse.json(
