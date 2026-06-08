@@ -35,7 +35,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between py-2 md:py-3 mb-2 md:mb-3 bg-[#F0F5FA]/80 backdrop-blur-md rounded-b-2xl gap-2 md:gap-4">
+    <header className="sticky top-0 z-50 flex items-center justify-between py-2 md:py-3 mb-2 md:mb-3 bg-[#F0F5FA]/80 backdrop-blur-md rounded-b-2xl gap-2 md:gap-4 max-w-full overflow-hidden">
       <div className="flex items-center gap-2 md:gap-4 flex-1">
         <button 
           onClick={onMenuClick}
