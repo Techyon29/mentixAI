@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search, Filter, Plus, Download, MoreVertical, ChevronLeft, ChevronRight, User, Mail, GraduationCap, Calendar, Clock, CheckCircle2, AlertTriangle, ArrowLeft, Users, BarChart2, UserCheck, UserMinus, Star, SlidersHorizontal, FileText, X, Trash2, Edit3, ChevronDown, Check, Zap, TrendingUp, Target, Activity, BookOpen, Brain, History, ArrowUpRight, Ban, ShieldAlert, Send, MessageSquare } from "lucide-react";
+import { Search, Filter, Plus, Download, MoreVertical, ChevronLeft, ChevronRight, User, Mail, GraduationCap, Calendar, Clock, CheckCircle2, AlertTriangle, ArrowLeft, ArrowRight, Users, BarChart2, UserCheck, UserMinus, Star, SlidersHorizontal, FileText, X, Trash2, Edit3, ChevronDown, Check, Zap, TrendingUp, Target, Activity, BookOpen, Brain, History, ArrowUpRight, Ban, ShieldAlert, Send, MessageSquare } from "lucide-react";
 
-import MentorLayout from "../MentorLayout";
+import Sidebar from "../Sidebar";
+import Navbar from "../Navbar";
 
 
 // --- Mock Data Initialization ---
@@ -251,20 +252,15 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }: any) => (
 // --- Main Component ---
 
 export default function StudentDetails() {
-  const [students, setStudents] = useState<any[]>(INITIAL_STUDENTS);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    const saved = localStorage.getItem("mentix_students");
-    if (saved) {
-      try {
-        setStudents(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to load students from localStorage", e);
-      }
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [students, setStudents] = useState<any[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("mentix_students");
+      return saved ? JSON.parse(saved) : INITIAL_STUDENTS;
     }
-  }, []);
+    return INITIAL_STUDENTS;
+  });
+
   const [loading, setLoading] = useState(false);
   const [view, setView] = useState<"list" | "detail">("list");
   const [detailTab, setDetailTab] = useState("Overview");
@@ -294,6 +290,23 @@ export default function StudentDetails() {
   const [adminPassword, setAdminPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [newStudent, setNewStudent] = useState({
+    name: "",
+    email: "",
+    rollId: "",
+    class: "",
+  });
+
+  const handleAddStudent = (e: React.FormEvent) => {
+    e.preventDefault();
+    addStudent({
+      ...newStudent,
+      rollNo: parseInt(newStudent.rollId) || 0,
+      section: "Section A" // Defaulting to Section A for now
+    });
+    setNewStudent({ name: "", email: "", rollId: "", class: "" });
+  };
+
   const [messageType, setMessageType] = useState<"Feedback" | "Warning" | "Inquiry">("Feedback");
   const [messageText, setMessageText] = useState("");
   const [timelineEvents, setTimelineEvents] = useState(activityTimeline);
@@ -302,10 +315,10 @@ export default function StudentDetails() {
 
   // Real-time Persistence
   useEffect(() => {
-    if (isMounted) {
+    if (students.length > 0) {
       localStorage.setItem("mentix_students", JSON.stringify(students));
     }
-  }, [students, isMounted]);
+  }, [students]);
 
   const handleSendMessage = () => {
     if (!messageText.trim()) return;
@@ -362,63 +375,24 @@ export default function StudentDetails() {
     window.URL.revokeObjectURL(url);
   };
 
-  const addStudent = async (newStudent: any) => {
-    try {
-      const res = await fetch("/api/teacher/student", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: newStudent.name,
-          email: newStudent.email,
-          class: newStudent.class,
-          section: newStudent.section,
-          rollNo: Number(newStudent.rollNo),
-        }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        alert(errorData.error || "Failed to add student");
-        return;
-      }
-
-      const responseData = await res.json();
-      const savedStudent = responseData.student;
-      const extra = savedStudent.extra || {};
-
-      const studentWithId = {
-        id: savedStudent._id,
-        name: savedStudent.name,
-        email: savedStudent.email,
-        class: extra.class || newStudent.class,
-        section: extra.section || newStudent.section,
-        rollNo: extra.rollNo !== undefined ? Number(extra.rollNo) : Number(newStudent.rollNo),
-        testsAttempted: 0,
-        avgScore: 0,
-        performance: "Average",
-        status: savedStudent.isActive ? "Active" : "Inactive",
-        lastActive: "Just now",
-        joinedDate: new Date(savedStudent.createdAt).toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }),
-      };
-      setStudents([studentWithId, ...students]);
-      setShowAddModal(false);
-      setNotification({
-        msg: "Student record added successfully",
-        type: "success",
-      });
-      setTimeout(() => setNotification(null), 3000);
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred while adding the student.");
-    }
+   const addStudent = (newStudent: any) => {
+    const studentWithId = {
+      ...newStudent,
+      id: Date.now(),
+      testsAttempted: 0,
+      avgScore: 0,
+      performance: "Average",
+      status: "Active",
+      lastActive: "Just now",
+      joinedDate: new Date().toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+    };
+    setStudents([studentWithId, ...students]);
+    setShowAddModal(false);
   };
-
 
   const deleteStudent = (id: number) => {
     setStudents(students.filter((s) => s.id !== id));
@@ -533,8 +507,129 @@ export default function StudentDetails() {
 
 
   return (
-    <MentorLayout>
-      {view === "list" ? (
+    <div className="relative w-full min-h-screen bg-[#F0F5FA] overflow-hidden font-sans text-slate-800">
+      <BackgroundOrbs />
+
+      {/* Add Student Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-blue-900/20 backdrop-blur-md"
+            onClick={() => setShowAddModal(false)}
+          />
+          <div className="relative w-full max-w-xl bg-white border border-white/50 rounded-[40px] shadow-[0_32px_80px_rgba(30,100,200,0.15)] overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-500" />
+
+            <div className="p-8 md:p-10">
+              <div className="flex justify-between items-center mb-10">
+                <div>
+                  <h2 className="text-3xl font-black text-[#0D245B] tracking-tight uppercase leading-none mb-2">
+                    Add New Student
+                  </h2>
+                  <p className="text-[#5B779E] text-[13px] font-bold uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-8 h-[2px] bg-blue-500" />
+                    Student Registration
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all active:scale-90"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <form onSubmit={handleAddStudent} className="space-y-6">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-black text-[#0D245B] uppercase tracking-widest ml-1">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newStudent.name}
+                      onChange={(e) =>
+                        setNewStudent({ ...newStudent, name: e.target.value })
+                      }
+                      className="w-full h-14 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl px-5 text-[15px] font-bold text-[#0D245B] transition-all outline-none placeholder:text-slate-300"
+                      placeholder="Enter full name..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-black text-[#0D245B] uppercase tracking-widest ml-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={newStudent.email}
+                      onChange={(e) =>
+                        setNewStudent({ ...newStudent, email: e.target.value })
+                      }
+                      className="w-full h-14 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl px-5 text-[15px] font-bold text-[#0D245B] transition-all outline-none placeholder:text-slate-300"
+                      placeholder="student@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-black text-[#0D245B] uppercase tracking-widest ml-1">
+                      Student ID
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newStudent.rollId}
+                      onChange={(e) =>
+                        setNewStudent({ ...newStudent, rollId: e.target.value })
+                      }
+                      className="w-full h-14 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl px-5 text-[15px] font-bold text-[#0D245B] transition-all outline-none placeholder:text-slate-300"
+                      placeholder="MS-2024-001"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-black text-[#0D245B] uppercase tracking-widest ml-1">
+                      Class Level
+                    </label>
+                    <select
+                      required
+                      value={newStudent.class}
+                      onChange={(e) =>
+                        setNewStudent({ ...newStudent, class: e.target.value })
+                      }
+                      className="w-full h-14 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl px-5 text-[15px] font-bold text-[#0D245B] transition-all outline-none"
+                    >
+                      <option value="">Select Class</option>
+                      <option value="X-A">X-A</option>
+                      <option value="X-B">X-B</option>
+                      <option value="XII-A">XII-A</option>
+                      <option value="XII-B">XII-B</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    type="submit"
+                    className="w-full h-16 bg-[#0D245B] hover:bg-blue-600 text-white rounded-3xl text-[13px] font-black uppercase tracking-[3px] shadow-[0_20px_40px_rgba(13,36,91,0.2)] hover:shadow-blue-500/20 transition-all active:scale-95 flex items-center justify-center gap-3"
+                  >
+                    Complete Registration <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="relative z-10 flex h-screen overflow-hidden">
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+        <main className="flex-1 min-w-0 flex flex-col h-full overflow-y-auto p-4 md:p-6 custom-scrollbar">
+          <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
+          {view === "list" ? (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Header Section */}
           <section className="mb-6 px-1 mt-2 flex flex-col md:flex-row justify-between items-start md:items-end gap-3">
@@ -680,8 +775,8 @@ export default function StudentDetails() {
 
           {/* Table Section */}
           <section className="px-2">
-            <div className="bg-white/60 backdrop-blur-xl border border-white/70 rounded-[32px] overflow-hidden shadow-[0_8px_24px_rgba(30,100,200,0.06)]">
-              <table className="w-full">
+            <div className="bg-white/60 backdrop-blur-xl border border-white/70 rounded-[32px] overflow-x-auto overflow-y-hidden shadow-[0_8px_24px_rgba(30,100,200,0.06)] custom-scrollbar">
+              <table className="w-full min-w-[600px] md:min-w-full">
                 <thead>
                   <tr className="bg-slate-50/50">
                     <th className="py-2 px-3 md:px-4 text-left text-[9px] md:text-[11px] font-black text-[#5B779E] uppercase tracking-widest">
@@ -1474,6 +1569,8 @@ export default function StudentDetails() {
       `,
         }}
       />
-    </MentorLayout>
+        </main>
+      </div>
+    </div>
   );
 }
